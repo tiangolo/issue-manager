@@ -1,0 +1,17 @@
+on:
+  schedule:
+  - cron: "* * * * *"
+
+jobs:
+  issue-manager:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: tiangolo/github-action-issue-manager
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        config:
+          - keyword: answered
+            delay: 10
+            users:
+              - mariacamilagl
+            message: This issue shall be closed.
