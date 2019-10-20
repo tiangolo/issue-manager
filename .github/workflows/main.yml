@@ -9,4 +9,4 @@ jobs:
     - uses: tiangolo/github-action-issue-manager@master
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        config: '[{"keyword": "answered", "delay": 10, "users": ["mariacamilagl"], "message": This issue shall be closed"}]'
+        config: '[{"keyword": "answered", "delay": 10, "users": ["mariacamilagl"], "message": "This issue shall be closed"}]'
