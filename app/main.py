@@ -55,3 +55,5 @@ if __name__ == "__main__":
                 issue.create_comment(keyword_meta.message)
                 issue.edit(state="closed")
                 break
+    logging.info(f"Finished")
+
