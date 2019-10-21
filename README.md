@@ -211,6 +211,24 @@ jobs:
             }
 ```
 
+### Edit your own config
+
+If you have [Visual Studio Code](https://code.visualstudio.com) or other modern editor, you can create your JSON config by creating a JSON file, e.g. `config.json`.
+
+Then writing the contents of your config in that file, and then copying the results.
+
+But you can do it all with autocomplete :rocket:.
+
+You can start your JSON config file with:
+
+```JSON
+{
+    "$schema": "https://raw.githubusercontent.com/tiangolo/issue-manager/master/schema.json"
+}
+```
+
+And then after you write a keyword and start its config, like `"answered": {}`, it will autocomplete the internal config keys, like `delay`, `users`, `message`. And will validate its contents.
+
 ## Motivation
 
 ### Closing early
