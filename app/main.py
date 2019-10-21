@@ -1,6 +1,6 @@
 import logging
 from datetime import datetime, timedelta
-from typing import List
+from typing import List, Dict
 
 from pydantic import BaseModel, BaseSettings, SecretStr
 
@@ -11,14 +11,13 @@ from github.NamedUser import NamedUser
 
 
 class KeywordMeta(BaseModel):
-    keyword: str
     delay: timedelta = timedelta(days=10)
     users: List[str] = []
     message: str = "Assuming the original issue was solved, this issue will be automatically closed now."
 
 
 class Settings(BaseSettings):
-    input_config: List[KeywordMeta]
+    input_config: Dict[str, KeywordMeta]
     github_repository: str
     input_token: SecretStr
 
@@ -44,9 +43,9 @@ if __name__ == "__main__":
         if not last_comment:
             continue
         user: NamedUser = last_comment.user
-        for keyword_meta in settings.input_config:
+        for keyword, keyword_meta in settings.input_config.items():
             if (
-                f"<!-- issue-manager: {keyword_meta.keyword} -->" in last_comment.body
+                f"<!-- issue-manager: {keyword} -->" in last_comment.body
                 and (datetime.utcnow() - keyword_meta.delay)
                 > last_comment.created_at
                 and last_comment.user.login in keyword_meta.users + [owner.login]

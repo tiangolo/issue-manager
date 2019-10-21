@@ -6,7 +6,17 @@ jobs:
   issue-manager:
     runs-on: ubuntu-latest
     steps:
-    - uses: tiangolo/github-action-issue-manager@master
+    - uses: tiangolo/issue-manager@master
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        config: '[{"keyword": "answered", "delay": 10, "users": ["mariacamilagl"], "message": "This issue shall be closed"}]'
+        config: >
+          {
+            "$schema": "./schema.json",
+            "answered":{
+                "delay": 10,
+                "users": ["mariacamilagl"],
+                "message": "This issue shall be closed."
+            }
+          }
+
+
