@@ -1,0 +1,29 @@
+{
+    "title": "Input_Config",
+    "type": "object",
+    "additionalProperties": {
+        "title": "KeywordMeta",
+        "type": "object",
+        "properties": {
+            "delay": {
+                "title": "Delay",
+                "default": 864000.0,
+                "type": "number",
+                "format": "time-delta"
+            },
+            "users": {
+                "title": "Users",
+                "default": [],
+                "type": "array",
+                "items": {
+                    "type": "string"
+                }
+            },
+            "message": {
+                "title": "Message",
+                "default": "Assuming the original issue was solved, this issue will be automatically closed now.",
+                "type": "string"
+            }
+        }
+    }
+}
