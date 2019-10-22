@@ -21,7 +21,7 @@
             },
             "message": {
                 "title": "Message",
-                "default": "Assuming the original issue was solved, this issue will be automatically closed now.",
+                "default": "Assuming the original issue was solved, it will be automatically closed now.",
                 "type": "string"
             }
         }

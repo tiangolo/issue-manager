@@ -13,7 +13,7 @@ from github.NamedUser import NamedUser
 class KeywordMeta(BaseModel):
     delay: timedelta = timedelta(days=10)
     users: List[str] = []
-    message: str = "Assuming the original issue was solved, this issue will be automatically closed now."
+    message: str = "Assuming the original issue was solved, it will be automatically closed now."
 
 
 class Settings(BaseSettings):
