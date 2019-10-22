@@ -33,7 +33,7 @@ jobs:
         config: '{"answered": {}}'
 ```
 
-Then, whenever the repo owner answers an issue with a comment, he/she can add an HTML comment with a mark, e.g.:
+Then, whenever the repo owner answers an issue with a comment, they can add an HTML comment with a mark, e.g.:
 
 ```markdown
 Ah, you have to use a JSON string in the config.
@@ -50,14 +50,14 @@ Ah, you have to use a JSON string in the config.
 But after 10 days, if no one has added a new comment, the GitHub action will write:
 
 ```markdown
-Assuming the original issue was solved, this issue will be automatically closed now.
+Assuming the original issue was solved, it will be automatically closed now.
 ```
 
 And then it will close the issue.
 
 ## Config
 
-If you check, the `config` in that file `main.yml` has a `string`, and inside of the string there's a whole JSON configuration:
+If you check, the `config` in that file `main.yml` has a `string`, and inside the string there's a whole JSON configuration:
 
 ```JSON
 {"answered": {}}
@@ -69,7 +69,7 @@ If you check, the `config` in that file `main.yml` has a `string`, and inside of
 '{"answered": {}}'
 ```
 
-This JSON configuration (inside a string) is what allows to add multiple custom keywords, with different users, and different messages.
+This JSON configuration (inside a string) is what allows us to add multiple custom keywords, with different users, and different messages.
 
 Imagine this JSON config:
 
@@ -102,9 +102,9 @@ In this case, if the last comment in an open issue has a keyword of `answered`, 
 <!-- issue-manager: answered -->
 ```
 
-...and was written by one of [@tiangolo](http://github.com/tiangolo) or [@dmontagu](https://github.com/dmontagu).
+...and was written by either [@tiangolo](http://github.com/tiangolo) or [@dmontagu](https://github.com/dmontagu).
 
-...and it has already passed 3 days, 12 hours, 30 minutes and 5 seconds or more.
+...and 3 days, 12 hours, 30 minutes and 5 seconds or more have already passed.
 
 ...it will close the issue with a message of:
 
@@ -163,7 +163,7 @@ By default, any config has:
 * `message`: A message of:
 
 ```markdown
-Assuming the original issue was solved, this issue will be automatically closed now.
+Assuming the original issue was solved, it will be automatically closed now.
 ```
 
 ### Config in the action
@@ -233,11 +233,11 @@ And then after you write a keyword and start its config, like `"answered": {}`, 
 
 ### Closing early
 
-When I answer an issue, I like to give the original user some time to respond, and give him/her the chance to close the issue before doing it myself.
+When I answer an issue, I like to give the original user some time to respond, and give them the chance to close the issue before doing it myself.
 
-Or some times, I have to request for additional info.
+Or some times, I have to request additional info.
 
-Some times, my answer didn't respond the real question/problem, and if I closed the issue immediately, it would end up feeling "impolite" to the user.
+Sometimes, my answer didn't respond the real question/problem, and if I closed the issue immediately, it would end up feeling "impolite" to the user.
 
 Moreover, if I closed the issue prematurely, there's a smaller chance that I (or someone else) will revisit it again to answer the real question/problem.
 
@@ -267,10 +267,10 @@ Something like:
 
 That won't be visible in the comment, but it will still be there and this action will be able to read it.
 
-Then, this action, by running every night (or however you configured it) will, for each of the open issues:
+Then, this action, by running every night (or however you configure it) will, for each of the open issues:
 
 * Check if the *last comment* has a keyword like that (configurable).
-    * It's important that it checks the last comment, that way, if the original issue creator or someone else wrote some extra comments (giving extra data, clarifying information, etc), it won't close it prematurely.
+    * It's important that it checks the last comment, that way if the original issue creator or someone else wrote some extra comments (giving extra data, clarifying information, etc), it won't close it prematurely.
 * Check if the keyword mark in that last comment was added by the repo owner or an authorized user (configurable).
 * Check if the current date is more than the configured *delay* to wait for the user to reply back or close the issue (configurable).
 * Then, if all that matches, it will add a comment with a message (configurable).
