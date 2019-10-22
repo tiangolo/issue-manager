@@ -276,6 +276,14 @@ Then, this action, by running every night (or however you configure it) will, fo
 * Then, if all that matches, it will add a comment with a message (configurable).
 * And then it will close the issue.
 
+## Release Notes
+
+### Latest Changes
+
+### 0.1.0
+
+* Initial release.
+
 ## License
 
 This project is licensed under the terms of the MIT license.
