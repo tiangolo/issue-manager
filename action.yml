@@ -1,4 +1,5 @@
-name: 'Issue Manager'
+name: "Tiangolo's Issue Manager"
+author: "Sebastián Ramírez <tiangolo@gmail.com>"
 description: 'Close issues using special keywords after a period of time with a custom message'
 inputs:
   token:
