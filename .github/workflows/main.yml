@@ -1,6 +1,6 @@
 on:
   schedule:
-  - cron: "0 0 * * *"
+  - cron: "0 * * * *"
 
 jobs:
   issue-manager:
@@ -11,12 +11,9 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
         config: >
           {
-            "$schema": "./schema.json",
             "answered":{
                 "delay": 10,
                 "users": ["mariacamilagl"],
                 "message": "This issue shall be closed."
             }
           }
-
-
