@@ -5,7 +5,7 @@ inputs:
   token:
     description: 'Token for the repo. Can be passed in using {{ secrets.GITHUB_TOKEN }}'
     required: true
-  input_settings:
+  config:
     description: 'JSON with settings as described in the README'
     required: true
 runs:
