@@ -280,6 +280,8 @@ Then, this action, by running every night (or however you configure it) will, fo
 
 ### Latest Changes
 
+* Fix incorrect input name. PR [#3](https://github.com/tiangolo/issue-manager/pull/3) by [@browniebroke](https://github.com/browniebroke).
+
 ### 0.1.0
 
 * Initial release.
