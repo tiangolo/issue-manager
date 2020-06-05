@@ -8,7 +8,7 @@ from github.Issue import Issue
 from github.IssueComment import IssueComment
 from github.IssueEvent import IssueEvent
 from github.NamedUser import NamedUser
-from pydantic import BaseModel, BaseSettings, SecretStr
+from pydantic import BaseModel, BaseSettings, SecretStr, validator
 
 
 class KeywordMeta(BaseModel):
@@ -24,6 +24,12 @@ class Settings(BaseSettings):
     input_token: SecretStr
     github_event_path: Path
     github_event_name: Optional[str] = None
+
+    @validator("input_config", pre=True)
+    def discard_schema(cls, v):
+        if "$schema" in v:
+            del v["$schema"]
+        return v
 
 
 class PartialGitHubEventIssue(BaseModel):
