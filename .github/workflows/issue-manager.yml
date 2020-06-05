@@ -1,3 +1,5 @@
+name: Issue Manager
+
 on:
   schedule:
   - cron: "0 0 * * *"
@@ -9,6 +11,7 @@ jobs:
     - uses: tiangolo/issue-manager@master
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
+
         config: >
           {
             "answered":{
