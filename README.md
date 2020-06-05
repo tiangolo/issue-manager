@@ -1,14 +1,6 @@
 # Issue Manager
 
-Automatically close issues that have a **keyword mark** (an HTML comment) in the **last comment** in the issue, by a group of predefined **users**, after a **custom delay**.
-
-## Features
-
-You can set multiple configurations, each with a different:
-
-* Keyword.
-* Set of users (multiple per keyword).
-* Message.
+Automatically close issues that have a **label**, after a **custom delay**, if no one replies back.
 
 ## How to use
 
@@ -18,35 +10,31 @@ A minimal example could be:
 
 ```yml
 name: Issue Manager
+
 on:
   schedule:
-  - cron: "0 0 * * *"
+    - cron: "0 0 * * *"
+  issue_comment:
+    types:
+      - created
+      - edited
+  issues:
+    types:
+      - labeled
 
 jobs:
   issue-manager:
     runs-on: ubuntu-latest
     steps:
-    - uses: tiangolo/issue-manager@0.1.1
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        config: '{"answered": {}}'
+        - uses: tiangolo/issue-manager@0.2.0
+        with:
+            token: ${{ secrets.GITHUB_TOKEN }}
+            config: '{"answered": {}}'
 ```
 
-Then, whenever the repo owner answers an issue with a comment, they can add an HTML comment with a mark, e.g.:
+Then, you can answer an issue and add the label from the config, in this case, `answered`.
 
-```markdown
-Ah, you have to use a JSON string in the config.
-
-<!-- issue-manager: answered -->
-```
-
-Then the comment will only show:
-
-```markdown
-Ah, you have to use a JSON string in the config.
-```
-
-But after 10 days, if no one has added a new comment, the GitHub action will write:
+After 10 days, if no one has added a new comment, the GitHub action will write:
 
 ```markdown
 Assuming the original issue was solved, it will be automatically closed now.
@@ -54,11 +42,13 @@ Assuming the original issue was solved, it will be automatically closed now.
 
 And then it will close the issue.
 
+But if someone adds a comment _after_ you added the label, it will remove the label.
+
 ## Config
 
 You can use any file name you want, `issue-manager.yml` is just a suggestion. But it has to be inside of `.github/workflows/` and have a `.yml` extension.
 
-If you check, the `config` in that file `issue-manager.yml` has a `string`, and inside the string there's a whole JSON configuration:
+If you check, the `config` in that file `issue-manager.yml` above has a `string`, and inside the string there's a whole JSON configuration:
 
 ```JSON
 {"answered": {}}
@@ -70,44 +60,33 @@ If you check, the `config` in that file `issue-manager.yml` has a `string`, and 
 '{"answered": {}}'
 ```
 
-This JSON configuration (inside a string) is what allows us to add multiple custom keywords, with different users, and different messages.
+This JSON configuration (inside a string) is what allows us to add multiple custom labels, with different delays, and different messages.
 
 Imagine this JSON config:
 
 ```JSON
 {
     "answered": {
-        "users": [
-            "tiangolo",
-            "dmontagu"
-        ],
         "delay": "P3DT12H30M5S",
         "message": "It seems the issue was answered, I'll close this now."
     },
     "validated": {
-        "users": ["tiangolo", "samuelcolvin"],
         "delay": 300,
         "message": "The issue could not be validated after 5 minutes. Closing now."
     },
     "waiting": {
-        "users": ["tomchristie", "dmontagu"],
         "delay": 691200,
         "message": "Closing after 8 days of waiting for the additional info requested."
     }
 }
 ```
 
-In this case, if the last comment in an open issue has a keyword of `answered`, as in:
+In this case, if:
 
-```markdown
-<!-- issue-manager: answered -->
-```
+* the issue has a label `answered`
+* and 3 days, 12 hours, 30 minutes and 5 seconds or more have already passed
 
-...and was written by either [@tiangolo](http://github.com/tiangolo) or [@dmontagu](https://github.com/dmontagu).
-
-...and 3 days, 12 hours, 30 minutes and 5 seconds or more have already passed.
-
-...it will close the issue with a message of:
+...the GitHub action will close the issue with a message of:
 
 ```markdown
 It seems the issue was answered, I'll close this now.
@@ -115,17 +94,12 @@ It seems the issue was answered, I'll close this now.
 
 ---
 
-But then, if the issue had a last comment with a keyword of `validated`:
+But then, if:
 
-```markdown
-<!-- issue-manager: validated -->
-```
+* the issue had a label `validated`
+* and was written more than `300` seconds ago (5 minutes)
 
-...was written by [@tiangolo](http://github.com/tiangolo) or [@samuelcolvin](http://github.com/samuelcolvin).
-
-...and was written more than `300` seconds ago (5 minutes).
-
-...it will close it with a message:
+...the GitHub action will close the issue with a message:
 
 ```markdown
 The issue could not be validated after 5 minutes. Closing now.
@@ -133,15 +107,10 @@ The issue could not be validated after 5 minutes. Closing now.
 
 ---
 
-And in the last case, using a keyword of `waiting`:
+And in the last case:
 
-```markdown
-<!-- issue-manager: waiting -->
-```
-
-...written by [@tomchristie](http://github.com/tomchristie) or [@dmontagu](http://github.com/dmontagu).
-
-...after `691200` seconds (10 days).
+* using a label `waiting`
+* after `691200` seconds (10 days)
 
 ...will close with:
 
@@ -155,17 +124,53 @@ The delay can be configured using [anything supported by Pydantic's `datetime`](
 
 So, it can be an [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) period format (like `P3DT12H30M5S`), or the amount of seconds between the two dates (like `691200`, or 10 days) plus other options.
 
+### Users and HTML comments
+
+Before supporting labels, this GitHub action used HTML comments, so, you would write something like:
+
+```markdown
+Ah, you have to use a JSON string in the config.
+
+<!-- issue-manager: answered -->
+```
+
+Then the comment would only show:
+
+```markdown
+Ah, you have to use a JSON string in the config.
+```
+
+And the GitHub action would read the label/keyword from that HTML comment.
+
+To support external users adding these comments (even if they can't add labels to your repo), you can add a config `users` with a list of usernames allowed to add these HTML keyword comments.
+
+In this case, the GitHub action will only close the issue if:
+
+* the _last_ comment has the keyword/label
+* it was written by a user in the `users` list in the `config` (or the owner of the repo)
+* the time delay since the last comment is enough
+
+### Remove label
+
+You can also pass a config `remove_label` per keyword. By default it's `true`.
+
+When someone adds a comment _after_ the label was added, then this GitHub action won't close the issue.
+
+On top of not closing the issue, by default, it will remove the label. You can disable removing the label by setting `remove_label` to `false`.
+
 ### Defaults
 
 By default, any config has:
 
-* `users`: No users, only the repository owner.
+* `users`: No users, only the repository owner (only applies to HTML comments).
 * `delay`: A delay of 10 days.
 * `message`: A message of:
 
 ```markdown
 Assuming the original issue was solved, it will be automatically closed now.
 ```
+
+* `remove_label`: True. If someone adds a comment after you added the label, it will remove the label from the issue.
 
 ### Config in the action
 
@@ -179,38 +184,40 @@ So, you can put all the config with:
 
 ```yml
 name: Issue Manager
+
 on:
   schedule:
-  - cron: "0 0 * * *"
+    - cron: "0 0 * * *"
+  issue_comment:
+    types:
+      - created
+      - edited
+  issues:
+    types:
+      - labeled
 
 jobs:
   issue-manager:
     runs-on: ubuntu-latest
     steps:
-    - uses: tiangolo/issue-manager@0.1.1
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        config: >
-            {
-                "answered": {
-                    "users": [
-                        "tiangolo",
-                        "dmontagu"
-                    ],
-                    "delay": "P3DT12H30M5S",
-                    "message": "It seems the issue was answered, I'll close this now."
-                },
-                "validated": {
-                    "users": ["tiangolo", "samuelcolvin"],
-                    "delay": 300,
-                    "message": "The issue could not be validated after 5 minutes. Closing now."
-                },
-                "waiting": {
-                    "users": ["tomchristie", "dmontagu"],
-                    "delay": 691200,
-                    "message": "Closing after 8 days of waiting for the additional info requested."
+        - uses: tiangolo/issue-manager@0.2.0
+        with:
+            token: ${{ secrets.GITHUB_TOKEN }}
+            config: >
+                {
+                    "answered": {
+                        "delay": "P3DT12H30M5S",
+                        "message": "It seems the issue was answered, I'll close this now."
+                    },
+                    "validated": {
+                        "delay": 300,
+                        "message": "The issue could not be validated after 5 minutes. Closing now."
+                    },
+                    "waiting": {
+                        "delay": 691200,
+                        "message": "Closing after 8 days of waiting for the additional info requested."
+                    }
                 }
-            }
 ```
 
 ### Edit your own config
@@ -230,6 +237,87 @@ You can start your JSON config file with:
 ```
 
 And then after you write a keyword and start its config, like `"answered": {}`, it will autocomplete the internal config keys, like `delay`, `users`, `message`. And will validate its contents.
+
+It's fine to leave the `$schema` in the `config` on the `.yml` file, it will be discarded and won't be used as a label.
+
+### A complete example
+
+**Note**: you probably don't need all the configs, the examples above should suffice for most cases. But if you want to allow other users to use keywords/labels in HTML comments, or want to make the GitHub action _not_ remove the labels if someone adds a new comment, this can help as an example:
+
+```yml
+name: Issue Manager
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+  issue_comment:
+    types:
+      - created
+      - edited
+  issues:
+    types:
+      - labeled
+
+jobs:
+  issue-manager:
+    runs-on: ubuntu-latest
+    steps:
+        - uses: tiangolo/issue-manager@0.2.0
+        with:
+            token: ${{ secrets.GITHUB_TOKEN }}
+            config: >
+                {
+                    "$schema": "https://raw.githubusercontent.com/tiangolo/issue-manager/master/schema.json",
+                    "answered": {
+                        "users": [
+                            "tiangolo",
+                            "dmontagu"
+                        ],
+                        "delay": "P3DT12H30M5S",
+                        "message": "It seems the issue was answered, I'll close this now.",
+                        "remove_label": false
+                    },
+                    "validated": {
+                        "users": [
+                            "tiangolo",
+                            "samuelcolvin"
+                        ],
+                        "delay": 300,
+                        "message": "The issue could not be validated after 5 minutes. Closing now.",
+                        "remove_label": true
+                    },
+                    "waiting": {
+                        "users": [
+                            "tomchristie",
+                            "dmontagu"
+                        ],
+                        "delay": 691200,
+                        "message": "Closing after 8 days of waiting for the additional info requested.",
+                        "remove_label": true
+                    }
+                }
+```
+
+## GitHub Action triggers
+
+If you check the examples above, they have a section that says when to run the GitHub action:
+
+```yml
+on:
+  schedule:
+    - cron: "0 0 * * *"
+  issue_comment:
+    types:
+      - created
+      - edited
+  issues:
+    types:
+      - labeled
+```
+
+The `cron` option means that the GitHub action will be run every day at 00:00 UTC.
+The `issue_comment` option means that it will be run with a specific issue when a comment is added. This way, if there's a new comment, it can immediately remove any label that was added before the new comment.
+The `issues` option with a type of `label` will run it with each specific issue when you add a label. This way you can add a label to an issue that was answered long ago, and if the configured delay since the last comment is enough the GitHub action will close the issue right away.
 
 ## Motivation
 
@@ -255,32 +343,31 @@ But that requires me going through all the open issues again, one by one, check 
 
 One option would be to use a tool that closes stale issues, like [probot/stale](https://github.com/probot/stale), or the [Close Stale Issues Action](https://github.com/marketplace/actions/close-stale-issues).
 
-But if the user came back explaining that my answer didn't respond to his/her problem, or giving the extra info requested, but I couldn't respond on time, the issue would still go stale and be closed.
+But if the user came back explaining that my answer didn't respond to his/her problem, or giving the extra info requested, but I couldn't respond on time, the issue would still go "stale" and be closed.
 
 ## What Issue Manager does
 
-This action allows the repo owner (and a configurable set of other users) to add a mark with a keyword to a comment in an issue (it's an HTML comment).
+This action allows the repo owner to add a label (e.g. `answered`) to an issue after answering. Or multiple labels with multiple configurations (multiple messages, delays, etc).
 
-Something like:
+Then, this action, by running every night (or however you configure it) will, for each open issue:
 
-```html
-<!-- issue-manager: answered -->
-```
-
-That won't be visible in the comment, but it will still be there and this action will be able to read it.
-
-Then, this action, by running every night (or however you configure it) will, for each of the open issues:
-
-* Check if the *last comment* has a keyword like that (configurable).
-    * It's important that it checks the last comment, that way if the original issue creator or someone else wrote some extra comments (giving extra data, clarifying information, etc), it won't close it prematurely.
-* Check if the keyword mark in that last comment was added by the repo owner or an authorized user (configurable).
-* Check if the current date is more than the configured *delay* to wait for the user to reply back or close the issue (configurable).
+* Check if the issue has one of the configured labels.
+* Check if the label was added _after_ the last comment.
+* If not, remove the label (configurable).
+* Check if the current date-time is more than the configured *delay* to wait for the user to reply back (configurable).
 * Then, if all that matches, it will add a comment with a message (configurable).
 * And then it will close the issue.
+
+Also, all that with the optional alternative using HTML comments.
+
+It will also run after each comment or label added, with the specific issue with the new comment or label (if you used the example configurations from above).
 
 ## Release Notes
 
 ### Latest Changes
+
+* Add support for running immediately with each specific issue after a new comment or label is added.
+* Add support for issue labels, detecting if a new comment was added after the label and removing the label.
 
 ### 0.1.1
 
