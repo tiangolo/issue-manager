@@ -377,6 +377,8 @@ It will also run after each comment or label added, with the specific issue that
 
 ### Latest Changes
 
+### 0.2.0
+
 * Add support for running immediately with each specific issue after a new comment or label is added.
 * Add support for issue labels, detecting if a new comment was added after the label and removing the label.
 
