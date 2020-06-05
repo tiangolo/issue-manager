@@ -26,10 +26,10 @@ jobs:
   issue-manager:
     runs-on: ubuntu-latest
     steps:
-        - uses: tiangolo/issue-manager@0.2.0
+      - uses: tiangolo/issue-manager@0.2.0
         with:
-            token: ${{ secrets.GITHUB_TOKEN }}
-            config: '{"answered": {}}'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          config: '{"answered": {}}'
 ```
 
 Then, you can answer an issue and add the label from the config, in this case, `answered`.
@@ -209,24 +209,24 @@ jobs:
   issue-manager:
     runs-on: ubuntu-latest
     steps:
-        - uses: tiangolo/issue-manager@0.2.0
+      - uses: tiangolo/issue-manager@0.2.0
         with:
-            token: ${{ secrets.GITHUB_TOKEN }}
-            config: >
-                {
-                    "answered": {
-                        "delay": "P3DT12H30M5S",
-                        "message": "It seems the issue was answered, I'll close this now."
-                    },
-                    "validated": {
-                        "delay": 300,
-                        "message": "The issue could not be validated after 5 minutes. Closing now."
-                    },
-                    "waiting": {
-                        "delay": 691200,
-                        "message": "Closing after 8 days of waiting for the additional info requested."
-                    }
+          token: ${{ secrets.GITHUB_TOKEN }}
+          config: >
+            {
+                "answered": {
+                    "delay": "P3DT12H30M5S",
+                    "message": "It seems the issue was answered, I'll close this now."
+                },
+                "validated": {
+                    "delay": 300,
+                    "message": "The issue could not be validated after 5 minutes. Closing now."
+                },
+                "waiting": {
+                    "delay": 691200,
+                    "message": "Closing after 8 days of waiting for the additional info requested."
                 }
+            }
 ```
 
 ### Edit your own config
@@ -271,40 +271,40 @@ jobs:
   issue-manager:
     runs-on: ubuntu-latest
     steps:
-        - uses: tiangolo/issue-manager@0.2.0
+      - uses: tiangolo/issue-manager@0.2.0
         with:
-            token: ${{ secrets.GITHUB_TOKEN }}
-            config: >
-                {
-                    "$schema": "https://raw.githubusercontent.com/tiangolo/issue-manager/master/schema.json",
-                    "answered": {
-                        "users": [
-                            "tiangolo",
-                            "dmontagu"
-                        ],
-                        "delay": "P3DT12H30M5S",
-                        "message": "It seems the issue was answered, I'll close this now.",
-                        "remove_label": false
-                    },
-                    "validated": {
-                        "users": [
-                            "tiangolo",
-                            "samuelcolvin"
-                        ],
-                        "delay": 300,
-                        "message": "The issue could not be validated after 5 minutes. Closing now.",
-                        "remove_label": true
-                    },
-                    "waiting": {
-                        "users": [
-                            "tomchristie",
-                            "dmontagu"
-                        ],
-                        "delay": 691200,
-                        "message": "Closing after 8 days of waiting for the additional info requested.",
-                        "remove_label": true
-                    }
+          token: ${{ secrets.GITHUB_TOKEN }}
+          config: >
+            {
+                "$schema": "https://raw.githubusercontent.com/tiangolo/issue-manager/master/schema.json",
+                "answered": {
+                    "users": [
+                        "tiangolo",
+                        "dmontagu"
+                    ],
+                    "delay": "P3DT12H30M5S",
+                    "message": "It seems the issue was answered, I'll close this now.",
+                    "remove_label": false
+                },
+                "validated": {
+                    "users": [
+                        "tiangolo",
+                        "samuelcolvin"
+                    ],
+                    "delay": 300,
+                    "message": "The issue could not be validated after 5 minutes. Closing now.",
+                    "remove_label": true
+                },
+                "waiting": {
+                    "users": [
+                        "tomchristie",
+                        "dmontagu"
+                    ],
+                    "delay": 691200,
+                    "message": "Closing after 8 days of waiting for the additional info requested.",
+                    "remove_label": true
                 }
+            }
 ```
 
 ## GitHub Action triggers
