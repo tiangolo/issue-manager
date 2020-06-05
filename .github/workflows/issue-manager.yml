@@ -3,6 +3,13 @@ name: Issue Manager
 on:
   schedule:
   - cron: "0 0 * * *"
+  issue_comment:
+    types:
+      - created
+      - edited
+  issues:
+    types:
+      - labeled
 
 jobs:
   issue-manager:
