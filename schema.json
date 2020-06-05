@@ -23,6 +23,11 @@
                 "title": "Message",
                 "default": "Assuming the original issue was solved, it will be automatically closed now.",
                 "type": "string"
+            },
+            "remove_label": {
+                "title": "Remove Label",
+                "default": true,
+                "type": "boolean"
             }
         }
     }
