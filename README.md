@@ -84,39 +84,48 @@ Imagine this JSON config:
 In this case, if:
 
 * the issue has a label `answered`
-* and 3 days, 12 hours, 30 minutes and 5 seconds or more have already passed
+* the label was added _after_ the last comment
+* the last comment was written more than 3 days, 12 hours, 30 minutes and 5 seconds ago
 
-...the GitHub action will close the issue with a message of:
+...the GitHub action would close the issue with a message of:
 
 ```markdown
 It seems the issue was answered, I'll close this now.
 ```
 
+But if there was a new comment created _after_ the label was added, by default, it would remove the label.
+
 ---
 
 But then, if:
 
-* the issue had a label `validated`
-* and was written more than `300` seconds ago (5 minutes)
+* the issue has a label `validated`
+* the label was added _after_ the last comment
+* the last comment was written more than `300` seconds ago (5 minutes)
 
-...the GitHub action will close the issue with a message:
+...the GitHub action would close the issue with a message:
 
 ```markdown
 The issue could not be validated after 5 minutes. Closing now.
 ```
 
+And also, if there was a new comment created _after_ the label was added, by default, it would remove the label.
+
 ---
 
-And in the last case:
+And in the last case, if:
 
-* using a label `waiting`
-* after `691200` seconds (10 days)
+* the issue has a label `waiting`
+* the label was added _after_ the last comment
+* the last comment was addded more than `691200` seconds (10 days) ago
 
-...will close with:
+...the GitHub action would close the issue with:
 
 ```markdown
 Closing after 10 days of waiting for the additional info requested.
 ```
+
+And again, by default, removing the label if there was a new comment written after adding the label.
 
 ### Delay
 
@@ -126,7 +135,7 @@ So, it can be an [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) period forma
 
 ### Users and HTML comments
 
-Before supporting labels, this GitHub action used HTML comments, so, you would write something like:
+Before supporting labels, this GitHub action used HTML comments, so, you would write a comment like:
 
 ```markdown
 Ah, you have to use a JSON string in the config.
@@ -315,9 +324,11 @@ on:
       - labeled
 ```
 
-The `cron` option means that the GitHub action will be run every day at 00:00 UTC.
-The `issue_comment` option means that it will be run with a specific issue when a comment is added. This way, if there's a new comment, it can immediately remove any label that was added before the new comment.
-The `issues` option with a type of `label` will run it with each specific issue when you add a label. This way you can add a label to an issue that was answered long ago, and if the configured delay since the last comment is enough the GitHub action will close the issue right away.
+* The `cron` option means that the GitHub action will be run every day at 00:00 UTC.
+* The `issue_comment` option means that it will be run with a specific issue when a comment is added.
+    * This way, if there's a new comment, it can immediately remove any label that was added before the new comment.
+* The `issues` option with a type of `label` will run it with each specific issue when you add a label.
+    * This way you can add a label to an issue that was answered long ago, and if the configured delay since the last comment is enough the GitHub action will close the issue right away.
 
 ## Motivation
 
@@ -360,7 +371,7 @@ Then, this action, by running every night (or however you configure it) will, fo
 
 Also, all that with the optional alternative using HTML comments.
 
-It will also run after each comment or label added, with the specific issue with the new comment or label (if you used the example configurations from above).
+It will also run after each comment or label added, with the specific issue that has the new comment or label (if you used the example configurations from above).
 
 ## Release Notes
 
