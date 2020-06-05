@@ -12,13 +12,12 @@ You can set multiple configurations, each with a different:
 
 ## How to use
 
-You first need to have access to [GitHub actions](https://github.com/features/actions) (in beta as of 2019-10).
-
-Install this GitHub action by creating a file in your repo at `.github/workflows/main.yml`.
+Install this GitHub action by creating a file in your repo at `.github/workflows/issue-manager.yml`.
 
 A minimal example could be:
 
 ```yml
+name: Issue Manager
 on:
   schedule:
   - cron: "0 0 * * *"
@@ -27,7 +26,7 @@ jobs:
   issue-manager:
     runs-on: ubuntu-latest
     steps:
-    - uses: tiangolo/issue-manager@master
+    - uses: tiangolo/issue-manager@0.1.1
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         config: '{"answered": {}}'
@@ -57,7 +56,9 @@ And then it will close the issue.
 
 ## Config
 
-If you check, the `config` in that file `main.yml` has a `string`, and inside the string there's a whole JSON configuration:
+You can use any file name you want, `issue-manager.yml` is just a suggestion. But it has to be inside of `.github/workflows/` and have a `.yml` extension.
+
+If you check, the `config` in that file `issue-manager.yml` has a `string`, and inside the string there's a whole JSON configuration:
 
 ```JSON
 {"answered": {}}
@@ -168,7 +169,7 @@ Assuming the original issue was solved, it will be automatically closed now.
 
 ### Config in the action
 
-To use that same JSON config from above, you would have to put it on a single `string` inside the GitHub Action config (`main.yml`).
+To use that same JSON config from above, you would have to put it on a single `string` inside the GitHub Action config (`issue-manager.yml`).
 
 But YAML supports multiline strings using `>`.
 
@@ -177,6 +178,7 @@ Just make sure to indent everything to be part of the same string.
 So, you can put all the config with:
 
 ```yml
+name: Issue Manager
 on:
   schedule:
   - cron: "0 0 * * *"
@@ -185,7 +187,7 @@ jobs:
   issue-manager:
     runs-on: ubuntu-latest
     steps:
-    - uses: tiangolo/issue-manager@master
+    - uses: tiangolo/issue-manager@0.1.1
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         config: >
@@ -279,6 +281,8 @@ Then, this action, by running every night (or however you configure it) will, fo
 ## Release Notes
 
 ### Latest Changes
+
+### 0.1.1
 
 * Fix incorrect input name. PR [#3](https://github.com/tiangolo/issue-manager/pull/3) by [@browniebroke](https://github.com/browniebroke).
 
