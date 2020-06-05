@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 import logging
 from typing import Dict, List, Optional
+from pathlib import Path
 
 from github import Github
 from github.Issue import Issue
@@ -21,6 +22,7 @@ class Settings(BaseSettings):
     input_config: Dict[str, KeywordMeta]
     github_repository: str
     input_token: SecretStr
+    github_event_path: Path
 
 
 def get_last_comment(issue: Issue) -> Optional[IssueComment]:
@@ -122,6 +124,11 @@ if __name__ == "__main__":
     import os
     import pprint
     pprint.pprint(os.environ)
+    print(f"{settings.github_event_path} exists: {settings.github_event_path.exists()} is_file: {settings.github_event_path.is_file()}")
+    if settings.github_event_path.is_file():
+        contents = settings.github_event_path.read_text()
+        print("contents:")
+        print(contents)
     logging.info("Debugging")
     raise RuntimeError("Debugging")
 
