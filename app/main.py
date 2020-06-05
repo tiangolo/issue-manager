@@ -117,6 +117,14 @@ if __name__ == "__main__":
     g = Github(settings.input_token.get_secret_value())
     repo = g.get_repo(settings.github_repository)
     owner: NamedUser = repo.owner
+    
+    # TODO: remove this
+    import os
+    import pprint
+    pprint.pprint(os.environ)
+    logging.info("Debugging")
+    raise RuntimeError("Debugging")
+
     for issue in repo.get_issues(state="open"):
         process_issue(issue=issue, settings=settings, owner=owner)
     logging.info(f"Finished")
