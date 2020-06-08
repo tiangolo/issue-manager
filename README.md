@@ -68,7 +68,7 @@ Imagine this JSON config:
 {
     "answered": {
         "delay": "P3DT12H30M5S",
-        "message": "It seems the issue was answered, I'll close this now."
+        "message": "It seems the issue was answered, closing this now."
     },
     "validated": {
         "delay": 300,
@@ -90,7 +90,7 @@ In this case, if:
 ...the GitHub action would close the issue with a message of:
 
 ```markdown
-It seems the issue was answered, I'll close this now.
+It seems the issue was answered, closing this now.
 ```
 
 But if there was a new comment created _after_ the label was added, by default, it would remove the label.
