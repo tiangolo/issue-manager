@@ -2,7 +2,7 @@ name: Issue Manager
 
 on:
   schedule:
-    - cron: "* * * * *"
+    - cron: "0 0 * * *"
   issue_comment:
     types:
       - created
