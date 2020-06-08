@@ -68,7 +68,7 @@ Imagine this JSON config:
 {
     "answered": {
         "delay": "P3DT12H30M5S",
-        "message": "It seems the issue was answered, I'll close this now."
+        "message": "It seems the issue was answered, closing this now."
     },
     "validated": {
         "delay": 300,
@@ -90,7 +90,7 @@ In this case, if:
 ...the GitHub action would close the issue with a message of:
 
 ```markdown
-It seems the issue was answered, I'll close this now.
+It seems the issue was answered, closing this now.
 ```
 
 But if there was a new comment created _after_ the label was added, by default, it would remove the label.
@@ -216,7 +216,7 @@ jobs:
             {
                 "answered": {
                     "delay": "P3DT12H30M5S",
-                    "message": "It seems the issue was answered, I'll close this now."
+                    "message": "It seems the issue was answered, closing this now."
                 },
                 "validated": {
                     "delay": 300,
@@ -283,7 +283,7 @@ jobs:
                         "dmontagu"
                     ],
                     "delay": "P3DT12H30M5S",
-                    "message": "It seems the issue was answered, I'll close this now.",
+                    "message": "It seems the issue was answered, closing this now.",
                     "remove_label": false
                 },
                 "validated": {
@@ -346,7 +346,7 @@ Moreover, if I closed the issue prematurely, there's a smaller chance that I (or
 
 But then, if I leave the issue open after giving an answer, in many cases, the issue will keep open until I come back to close it, after many days.
 
-Then, after that time (10 days, 30 days) and after seeing that there are no new comments, I write "I assume the problem is solved, I'll close this issue now".
+Then, after that time (10 days, 30 days) and after seeing that there are no new comments, I write "I assume the problem is solved, closing this issue now".
 
 But that requires me going through all the open issues again, one by one, check where I (or someone else) have already answered, typing that message, etc.
 
