@@ -216,7 +216,7 @@ jobs:
             {
                 "answered": {
                     "delay": "P3DT12H30M5S",
-                    "message": "It seems the issue was answered, I'll close this now."
+                    "message": "It seems the issue was answered, closing this now."
                 },
                 "validated": {
                     "delay": 300,
@@ -283,7 +283,7 @@ jobs:
                         "dmontagu"
                     ],
                     "delay": "P3DT12H30M5S",
-                    "message": "It seems the issue was answered, I'll close this now.",
+                    "message": "It seems the issue was answered, closing this now.",
                     "remove_label": false
                 },
                 "validated": {
