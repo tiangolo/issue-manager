@@ -377,6 +377,8 @@ It will also run after each comment or label added, with the specific issue that
 
 ### Latest Changes
 
+* Fix using single quote (`'`) in README examples. PR [#6](https://github.com/tiangolo/issue-manager/pull/6) by [@svlandeg](https://github.com/svlandeg).
+
 ### 0.2.0
 
 * Add support for running immediately with each specific issue after a new comment or label is added.
