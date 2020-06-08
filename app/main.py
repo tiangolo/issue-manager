@@ -61,10 +61,10 @@ def get_labeled_events(events: List[IssueEvent]) -> List[IssueEvent]:
 
 def get_last_event_for_label(
     *, labeled_events: List[IssueEvent], label: str
-) -> IssueEvent:
+) -> Optional[IssueEvent]:
     last_event: Optional[IssueEvent] = None
     for event in labeled_events:
-        if event.label.name == label:
+        if event.label and event.label.name == label:
             if not last_event:
                 last_event = event
                 continue
@@ -83,7 +83,7 @@ def close_issue(*, issue: Issue, keyword_meta: KeywordMeta) -> None:
 
 def process_issue(*, issue: Issue, settings: Settings, owner: NamedUser) -> None:
     logging.info(f"Processing issue: #{issue.number}")
-    label_strs = set([l.name for l in issue.get_labels()])
+    label_strs = set([label.name for label in issue.get_labels()])
     events = list(issue.get_events())
     labeled_events = get_labeled_events(events)
     last_comment = get_last_comment(issue)
@@ -101,7 +101,11 @@ def process_issue(*, issue: Issue, settings: Settings, owner: NamedUser) -> None
             keyword_event = get_last_event_for_label(
                 labeled_events=labeled_events, label=keyword
             )
-            if last_comment and last_comment.created_at > keyword_event.created_at:
+            if (
+                last_comment
+                and keyword_event
+                and last_comment.created_at > keyword_event.created_at
+            ):
                 logging.info(
                     f"Not closing as the last comment was written after adding the "
                     f'label: "{keyword}"'
@@ -149,4 +153,4 @@ if __name__ == "__main__":
     else:
         for issue in repo.get_issues(state="open"):
             process_issue(issue=issue, settings=settings, owner=owner)
-    logging.info(f"Finished")
+    logging.info("Finished")
