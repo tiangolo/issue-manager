@@ -377,6 +377,8 @@ It will also run after each comment or label added, with the specific issue that
 
 ### Latest Changes
 
+### 0.2.1
+
 * Avoid crashing when a label has been edited _after_ added to the issue. PR [#9](https://github.com/tiangolo/issue-manager/pull/9).
 * Fix using single quote (`'`) in README examples. PR [#6](https://github.com/tiangolo/issue-manager/pull/6) by [@svlandeg](https://github.com/svlandeg).
 
