@@ -346,7 +346,7 @@ Moreover, if I closed the issue prematurely, there's a smaller chance that I (or
 
 But then, if I leave the issue open after giving an answer, in many cases, the issue will keep open until I come back to close it, after many days.
 
-Then, after that time (10 days, 30 days) and after seeing that there are no new comments, I write "I assume the problem is solved, I'll close this issue now".
+Then, after that time (10 days, 30 days) and after seeing that there are no new comments, I write "I assume the problem is solved, closing this issue now".
 
 But that requires me going through all the open issues again, one by one, check where I (or someone else) have already answered, typing that message, etc.
 
