@@ -159,13 +159,19 @@ In this case, the GitHub action will only close the issue if:
 * it was written by a user in the `users` list in the `config` (or the owner of the repo)
 * the time delay since the last comment is enough
 
-### Remove label
+### Remove label on comment
 
-You can also pass a config `remove_label` per keyword. By default it's `true`.
+You can also pass a config `remove_label_on_comment` per keyword. By default it's `true`.
 
 When someone adds a comment _after_ the label was added, then this GitHub action won't close the issue.
 
-On top of not closing the issue, by default, it will remove the label. You can disable removing the label by setting `remove_label` to `false`.
+On top of not closing the issue, by default, it will remove the label. You can disable removing the label by setting `remove_label_on_comment` to `false`.
+
+### Remove label on close
+
+After this GitHub action closes an issue it can also automatically remove the label from the issue when you pass the config `remove_label_on_close` set to `true`.
+
+By default it is false, and doesn't remove the label from the issue.
 
 ### Defaults
 
@@ -179,7 +185,8 @@ By default, any config has:
 Assuming the original issue was solved, it will be automatically closed now.
 ```
 
-* `remove_label`: True. If someone adds a comment after you added the label, it will remove the label from the issue.
+* `remove_label_on_comment`: True. If someone adds a comment after you added the label, it will remove the label from the issue.
+* `remove_label_on_close`: False. After this GitHub action closes the issue it would also remove the label from the issue.
 
 ### Config in the action
 
@@ -284,7 +291,8 @@ jobs:
                     ],
                     "delay": "P3DT12H30M5S",
                     "message": "It seems the issue was answered, closing this now.",
-                    "remove_label": false
+                    "remove_label_on_comment": false,
+                    "remove_label_on_close": false
                 },
                 "validated": {
                     "users": [
@@ -293,7 +301,8 @@ jobs:
                     ],
                     "delay": 300,
                     "message": "The issue could not be validated after 5 minutes. Closing now.",
-                    "remove_label": true
+                    "remove_label_on_comment": true,
+                    "remove_label_on_close": false
                 },
                 "waiting": {
                     "users": [
@@ -302,7 +311,8 @@ jobs:
                     ],
                     "delay": 691200,
                     "message": "Closing after 8 days of waiting for the additional info requested.",
-                    "remove_label": true
+                    "remove_label_on_comment": true,
+                    "remove_label_on_close": true
                 }
             }
 ```
