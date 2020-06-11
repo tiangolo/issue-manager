@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 import logging
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Set
 
 from github import Github
 from github.Issue import Issue
@@ -15,7 +15,8 @@ class KeywordMeta(BaseModel):
     delay: timedelta = timedelta(days=10)
     users: List[str] = []
     message: str = "Assuming the original issue was solved, it will be automatically closed now."
-    remove_label: bool = True
+    remove_label_on_comment: bool = True
+    remove_label_on_close: bool = False
 
 
 class Settings(BaseSettings):
@@ -73,12 +74,17 @@ def get_last_event_for_label(
     return last_event
 
 
-def close_issue(*, issue: Issue, keyword_meta: KeywordMeta) -> None:
+def close_issue(
+    *, issue: Issue, keyword_meta: KeywordMeta, keyword: str, label_strs: Set[str]
+) -> None:
     logging.info(
         f"Clossing issue: #{issue.number} with message: {keyword_meta.message}"
     )
     issue.create_comment(keyword_meta.message)
     issue.edit(state="closed")
+    if keyword_meta.remove_label_on_close:
+        if keyword in label_strs:
+            issue.remove_from_labels(keyword)
 
 
 def process_issue(*, issue: Issue, settings: Settings, owner: NamedUser) -> None:
@@ -110,11 +116,16 @@ def process_issue(*, issue: Issue, settings: Settings, owner: NamedUser) -> None
                     f"Not closing as the last comment was written after adding the "
                     f'label: "{keyword}"'
                 )
-                if keyword_meta.remove_label:
+                if keyword_meta.remove_label_on_comment:
                     logging.info(f'Removing label: "{keyword}"')
                     issue.remove_from_labels(keyword)
             elif closable_delay:
-                close_issue(issue=issue, keyword_meta=keyword_meta)
+                close_issue(
+                    issue=issue,
+                    keyword_meta=keyword_meta,
+                    keyword=keyword,
+                    label_strs=label_strs,
+                )
                 break
         # Check HTML comments by allowed users
         if (
@@ -127,7 +138,12 @@ def process_issue(*, issue: Issue, settings: Settings, owner: NamedUser) -> None
                 f'Last comment by user: "{last_comment.user.login}" had HTML keyword '
                 f'comment: "{keyword}" and there\'s a closable delay.'
             )
-            close_issue(issue=issue, keyword_meta=keyword_meta)
+            close_issue(
+                issue=issue,
+                keyword_meta=keyword_meta,
+                keyword=keyword,
+                label_strs=label_strs,
+            )
             break
 
 
