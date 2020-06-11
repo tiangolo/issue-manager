@@ -2,7 +2,7 @@ name: Issue Manager
 
 on:
   schedule:
-    - cron: "0 0 * * *"
+    - cron: "* * * * *"
   issue_comment:
     types:
       - created
@@ -27,6 +27,7 @@ jobs:
                 "message": "This issue shall be closed."
             },
             "more-info-needed": {
-              "delay": 120
+              "delay": 120,
+              "remove_label_on_close": true
             }
           }
