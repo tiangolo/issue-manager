@@ -377,6 +377,8 @@ It will also run after each comment or label added, with the specific issue that
 
 ### Latest Changes
 
+* Add option to remove a label automatically after closing the issue. PR [#10](https://github.com/tiangolo/issue-manager/pull/10).
+
 ### 0.2.1
 
 * Avoid crashing when a label has been edited _after_ added to the issue. PR [#9](https://github.com/tiangolo/issue-manager/pull/9).
