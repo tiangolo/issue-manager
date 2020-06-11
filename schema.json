@@ -24,9 +24,14 @@
                 "default": "Assuming the original issue was solved, it will be automatically closed now.",
                 "type": "string"
             },
-            "remove_label": {
-                "title": "Remove Label",
+            "remove_label_on_comment": {
+                "title": "Remove Label On Comment",
                 "default": true,
+                "type": "boolean"
+            },
+            "remove_label_on_close": {
+                "title": "Remove Label On Close",
+                "default": false,
                 "type": "boolean"
             }
         }
