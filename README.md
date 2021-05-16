@@ -384,8 +384,12 @@ It will also run after each comment or label added, with the specific issue that
 
 ### Latest Changes
 
+
+### 0.4.0
+
 * ✨ Add support for managing PRs and remove support for HTML comments to avoid rate limits. PR [#12](https://github.com/tiangolo/issue-manager/pull/12) by [@tiangolo](https://github.com/tiangolo).
 * 👷 Add Latest Changes GitHub Action. PR [#13](https://github.com/tiangolo/issue-manager/pull/13) by [@tiangolo](https://github.com/tiangolo).
+
 ### 0.3.0
 
 * Add option to remove a label automatically after closing the issue. PR [#10](https://github.com/tiangolo/issue-manager/pull/10).
