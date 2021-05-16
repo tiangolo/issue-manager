@@ -7,13 +7,11 @@ from github import Github
 from github.Issue import Issue
 from github.IssueComment import IssueComment
 from github.IssueEvent import IssueEvent
-from github.NamedUser import NamedUser
 from pydantic import BaseModel, BaseSettings, SecretStr, validator
 
 
 class KeywordMeta(BaseModel):
     delay: timedelta = timedelta(days=10)
-    users: List[str] = []
     message: str = "Assuming the original issue was solved, it will be automatically closed now."
     remove_label_on_comment: bool = True
     remove_label_on_close: bool = False
@@ -87,7 +85,7 @@ def close_issue(
             issue.remove_from_labels(keyword)
 
 
-def process_issue(*, issue: Issue, settings: Settings, owner: NamedUser) -> None:
+def process_issue(*, issue: Issue, settings: Settings) -> None:
     logging.info(f"Processing issue: #{issue.number}")
     label_strs = set([label.name for label in issue.get_labels()])
     events = list(issue.get_events())
@@ -127,24 +125,6 @@ def process_issue(*, issue: Issue, settings: Settings, owner: NamedUser) -> None
                     label_strs=label_strs,
                 )
                 break
-        # Check HTML comments by allowed users
-        if (
-            last_comment
-            and f"<!-- issue-manager: {keyword} -->" in last_comment.body
-            and closable_delay
-            and last_comment.user.login in keyword_meta.users + [owner.login]
-        ):
-            logging.info(
-                f'Last comment by user: "{last_comment.user.login}" had HTML keyword '
-                f'comment: "{keyword}" and there\'s a closable delay.'
-            )
-            close_issue(
-                issue=issue,
-                keyword_meta=keyword_meta,
-                keyword=keyword,
-                label_strs=label_strs,
-            )
-            break
 
 
 if __name__ == "__main__":
@@ -153,7 +133,6 @@ if __name__ == "__main__":
     logging.info(f"Using config: {settings.json()}")
     g = Github(settings.input_token.get_secret_value())
     repo = g.get_repo(settings.github_repository)
-    owner: NamedUser = repo.owner
     github_event: Optional[PartialGitHubEvent] = None
     if settings.github_event_path.is_file():
         contents = settings.github_event_path.read_text()
@@ -165,8 +144,9 @@ if __name__ == "__main__":
         if github_event and github_event.issue:
             issue = repo.get_issue(github_event.issue.number)
             if issue.state == "open":
-                process_issue(issue=issue, settings=settings, owner=owner)
+                process_issue(issue=issue, settings=settings)
     else:
-        for issue in repo.get_issues(state="open"):
-            process_issue(issue=issue, settings=settings, owner=owner)
+        for keyword, keyword_meta in settings.input_config.items():
+            for issue in repo.get_issues(state="open", labels=[keyword]):
+                process_issue(issue=issue, settings=settings)
     logging.info("Finished")
