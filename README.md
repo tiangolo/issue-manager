@@ -384,6 +384,7 @@ It will also run after each comment or label added, with the specific issue that
 
 ### Latest Changes
 
+* 👷 Add Latest Changes GitHub Action. PR [#13](https://github.com/tiangolo/issue-manager/pull/13) by [@tiangolo](https://github.com/tiangolo).
 ### 0.3.0
 
 * Add option to remove a label automatically after closing the issue. PR [#10](https://github.com/tiangolo/issue-manager/pull/10).
