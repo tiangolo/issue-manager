@@ -12,7 +12,7 @@ from pydantic import BaseModel, BaseSettings, SecretStr, validator
 
 class KeywordMeta(BaseModel):
     delay: timedelta = timedelta(days=10)
-    message: str = "Assuming the original issue was solved, it will be automatically closed now."
+    message: str = "Assuming the original need was handled, this will be automatically closed now."
     remove_label_on_comment: bool = True
     remove_label_on_close: bool = False
 
@@ -141,6 +141,7 @@ if __name__ == "__main__":
         github_event = PartialGitHubEvent.parse_raw(contents)
     if (
         settings.github_event_name == "issues"
+        or settings.github_event_name == "pull_request_target"
         or settings.github_event_name == "issue_comment"
     ):
         if github_event and github_event.issue:
