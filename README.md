@@ -384,6 +384,7 @@ It will also run after each comment or label added, with the specific issue that
 
 ### Latest Changes
 
+* ✨ Add support for managing PRs and remove support for HTML comments to avoid rate limits. PR [#12](https://github.com/tiangolo/issue-manager/pull/12) by [@tiangolo](https://github.com/tiangolo).
 * 👷 Add Latest Changes GitHub Action. PR [#13](https://github.com/tiangolo/issue-manager/pull/13) by [@tiangolo](https://github.com/tiangolo).
 ### 0.3.0
 
