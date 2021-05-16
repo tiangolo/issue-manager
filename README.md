@@ -1,6 +1,6 @@
 # Issue Manager
 
-Automatically close issues that have a **label**, after a **custom delay**, if no one replies back.
+Automatically close issues or Pull Requests that have a **label**, after a **custom delay**, if no one replies back.
 
 ## How to use
 
@@ -17,32 +17,35 @@ on:
   issue_comment:
     types:
       - created
-      - edited
   issues:
     types:
       - labeled
+  pull_request_target:
+    types:
+      - labeled
+  workflow_dispatch:
 
 jobs:
   issue-manager:
     runs-on: ubuntu-latest
     steps:
-      - uses: tiangolo/issue-manager@0.3.0
+      - uses: tiangolo/issue-manager@0.4.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           config: '{"answered": {}}'
 ```
 
-Then, you can answer an issue and add the label from the config, in this case, `answered`.
+Then, you can answer an issue or PR and add the label from the config, in this case, `answered`.
 
 After 10 days, if no one has added a new comment, the GitHub action will write:
 
 ```markdown
-Assuming the original issue was solved, it will be automatically closed now.
+Assuming the original need was handled, this will be automatically closed now.
 ```
 
 And then it will close the issue.
 
-But if someone adds a comment _after_ you added the label, it will remove the label.
+But if someone adds a comment _after_ you added the label, this GitHub Action will remove the label so that you can come back and check it instead of closing it.
 
 ## Config
 
@@ -77,6 +80,10 @@ Imagine this JSON config:
     "waiting": {
         "delay": 691200,
         "message": "Closing after 8 days of waiting for the additional info requested."
+    },
+    "needs-tests": {
+      "delay": 691200,
+      "message": "This PR will be closed after waiting 8 days for tests to be added. Please create a new one with tests."
     }
 }
 ```
@@ -113,11 +120,11 @@ And also, if there was a new comment created _after_ the label was added, by def
 
 ---
 
-And in the last case, if:
+Then, if:
 
 * the issue has a label `waiting`
 * the label was added _after_ the last comment
-* the last comment was addded more than `691200` seconds (10 days) ago
+* the last comment was addded more than `691200` seconds (8 days) ago
 
 ...the GitHub action would close the issue with:
 
@@ -127,41 +134,31 @@ Closing after 10 days of waiting for the additional info requested.
 
 And again, by default, removing the label if there was a new comment written after adding the label.
 
+---
+
+And finally, if:
+
+* a PR has a label `needs-tests`
+* the label was added _after_ the last comment
+* the last comment was addded more than `691200` seconds (8 days) ago
+
+...the GitHub action would close the PR with:
+
+```markdown
+This PR will be closed after waiting 8 days for tests to be added. Please create a new one with tests.
+```
+
+**Note**: in this last example the process is applied to a PR instead of an issue. The same logic applies to both issues and PRs. If you want a label to only apply to issues, you should use that label only with issues, and the same with PRs.
+
 ### Delay
 
 The delay can be configured using [anything supported by Pydantic's `datetime`](https://pydantic-docs.helpmanual.io/usage/types/#datetime-types).
 
-So, it can be an [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) period format (like `P3DT12H30M5S`), or the amount of seconds between the two dates (like `691200`, or 10 days) plus other options.
-
-### Users and HTML comments
-
-Before supporting labels, this GitHub action used HTML comments, so, you would write a comment like:
-
-```markdown
-Ah, you have to use a JSON string in the config.
-
-<!-- issue-manager: answered -->
-```
-
-Then the comment would only show:
-
-```markdown
-Ah, you have to use a JSON string in the config.
-```
-
-And the GitHub action would read the label/keyword from that HTML comment.
-
-To support external users adding these comments (even if they can't add labels to your repo), you can add a config `users` with a list of usernames allowed to add these HTML keyword comments.
-
-In this case, the GitHub action will only close the issue if:
-
-* the _last_ comment has the keyword/label
-* it was written by a user in the `users` list in the `config` (or the owner of the repo)
-* the time delay since the last comment is enough
+So, it can be an [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) period format (like `P3DT12H30M5S`), or the number of seconds between the two dates (like `691200`, or 10 days) plus other options.
 
 ### Remove label on comment
 
-You can also pass a config `remove_label_on_comment` per keyword. By default it's `true`.
+You can also pass a config `remove_label_on_comment` per keyword. By default, it's `true`.
 
 When someone adds a comment _after_ the label was added, then this GitHub action won't close the issue.
 
@@ -177,7 +174,6 @@ By default it is false, and doesn't remove the label from the issue.
 
 By default, any config has:
 
-* `users`: No users, only the repository owner (only applies to HTML comments).
 * `delay`: A delay of 10 days.
 * `message`: A message of:
 
@@ -211,6 +207,10 @@ on:
   issues:
     types:
       - labeled
+  pull_request_target:
+    types:
+      - labeled
+  workflow_dispatch:
 
 jobs:
   issue-manager:
@@ -238,7 +238,7 @@ jobs:
 
 ### Edit your own config
 
-If you have [Visual Studio Code](https://code.visualstudio.com) or other modern editor, you can create your JSON config by creating a JSON file, e.g. `config.json`.
+If you have [Visual Studio Code](https://code.visualstudio.com) or another modern editor, you can create your JSON config by creating a JSON file, e.g. `config.json`.
 
 Then writing the contents of your config in that file, and then copying the results.
 
@@ -252,13 +252,13 @@ You can start your JSON config file with:
 }
 ```
 
-And then after you write a keyword and start its config, like `"answered": {}`, it will autocomplete the internal config keys, like `delay`, `users`, `message`. And will validate its contents.
+And then after you write a keyword and start its config, like `"answered": {}`, it will autocomplete the internal config keys, like `delay`, `message`. And will validate its contents.
 
 It's fine to leave the `$schema` in the `config` on the `.yml` file, it will be discarded and won't be used as a label.
 
 ### A complete example
 
-**Note**: you probably don't need all the configs, the examples above should suffice for most cases. But if you want to allow other users to use keywords/labels in HTML comments, or want to make the GitHub action _not_ remove the labels if someone adds a new comment, this can help as an example:
+**Note**: you probably don't need all the configs, the examples above should suffice for most cases. But if you want to make the GitHub action _not_ remove the labels if someone adds a new comment, this can help as an example:
 
 ```yml
 name: Issue Manager
@@ -273,6 +273,10 @@ on:
   issues:
     types:
       - labeled
+  pull_request_target:
+    types:
+      - labeled
+  workflow_dispatch:
 
 jobs:
   issue-manager:
@@ -285,30 +289,18 @@ jobs:
             {
                 "$schema": "https://raw.githubusercontent.com/tiangolo/issue-manager/master/schema.json",
                 "answered": {
-                    "users": [
-                        "tiangolo",
-                        "dmontagu"
-                    ],
                     "delay": "P3DT12H30M5S",
                     "message": "It seems the issue was answered, closing this now.",
                     "remove_label_on_comment": false,
                     "remove_label_on_close": false
                 },
                 "validated": {
-                    "users": [
-                        "tiangolo",
-                        "samuelcolvin"
-                    ],
                     "delay": 300,
                     "message": "The issue could not be validated after 5 minutes. Closing now.",
                     "remove_label_on_comment": true,
                     "remove_label_on_close": false
                 },
                 "waiting": {
-                    "users": [
-                        "tomchristie",
-                        "dmontagu"
-                    ],
                     "delay": 691200,
                     "message": "Closing after 8 days of waiting for the additional info requested.",
                     "remove_label_on_comment": true,
@@ -332,6 +324,10 @@ on:
   issues:
     types:
       - labeled
+  pull_request_target:
+    types:
+      - labeled
+  workflow_dispatch:
 ```
 
 * The `cron` option means that the GitHub action will be run every day at 00:00 UTC.
@@ -339,14 +335,17 @@ on:
     * This way, if there's a new comment, it can immediately remove any label that was added before the new comment.
 * The `issues` option with a type of `label` will run it with each specific issue when you add a label.
     * This way you can add a label to an issue that was answered long ago, and if the configured delay since the last comment is enough the GitHub action will close the issue right away.
+* The `pull_request_target` option with a type of `label` will run it with each specific Pull Request made to your repo when you add a label.
+    * This way you can add a label to a PR that was answered long ago, or that was waiting for more comments from the author, etc. And if the configured delay since the last comment is enough the GitHub action will close the issue right away.
+* The `workflow_dispatch` option allows you to run the action manually from the GitHub Actions tab for your repo.
 
 ## Motivation
 
 ### Closing early
 
-When I answer an issue, I like to give the original user some time to respond, and give them the chance to close the issue before doing it myself.
+When I answer an issue, I like to give the original user some time to respond and give them the chance to close the issue before doing it myself.
 
-Or some times, I have to request additional info.
+Or sometimes, I have to request additional info.
 
 Sometimes, my answer didn't respond the real question/problem, and if I closed the issue immediately, it would end up feeling "impolite" to the user.
 
@@ -364,7 +363,7 @@ But that requires me going through all the open issues again, one by one, check 
 
 One option would be to use a tool that closes stale issues, like [probot/stale](https://github.com/probot/stale), or the [Close Stale Issues Action](https://github.com/marketplace/actions/close-stale-issues).
 
-But if the user came back explaining that my answer didn't respond to his/her problem, or giving the extra info requested, but I couldn't respond on time, the issue would still go "stale" and be closed.
+But if the user came back explaining that my answer didn't respond to his/her problem or giving the extra info requested, but I couldn't respond on time, the issue would still go "stale" and be closed.
 
 ## What Issue Manager does
 
@@ -378,8 +377,6 @@ Then, this action, by running every night (or however you configure it) will, fo
 * Check if the current date-time is more than the configured *delay* to wait for the user to reply back (configurable).
 * Then, if all that matches, it will add a comment with a message (configurable).
 * And then it will close the issue.
-
-Also, all that with the optional alternative using HTML comments.
 
 It will also run after each comment or label added, with the specific issue that has the new comment or label (if you used the example configurations from above).
 
