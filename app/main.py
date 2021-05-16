@@ -37,6 +37,7 @@ class PartialGitHubEventIssue(BaseModel):
 
 class PartialGitHubEvent(BaseModel):
     issue: Optional[PartialGitHubEventIssue] = None
+    pull_request: Optional[PartialGitHubEventIssue] = None
 
 
 def get_last_comment(issue: Issue) -> Optional[IssueComment]:
@@ -144,10 +145,16 @@ if __name__ == "__main__":
         or settings.github_event_name == "pull_request_target"
         or settings.github_event_name == "issue_comment"
     ):
-        if github_event and github_event.issue:
-            issue = repo.get_issue(github_event.issue.number)
-            if issue.state == "open":
-                process_issue(issue=issue, settings=settings)
+        if github_event:
+            issue_number: Optional[int] = None
+            if github_event.issue:
+                issue_number = github_event.issue.number
+            elif github_event.pull_request:
+                issue_number = github_event.pull_request.number
+            if issue_number is not None:
+                issue = repo.get_issue(issue_number)
+                if issue.state == "open":
+                    process_issue(issue=issue, settings=settings)
     else:
         for keyword, keyword_meta in settings.input_config.items():
             for issue in repo.get_issues(state="open", labels=[keyword]):
