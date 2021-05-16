@@ -93,12 +93,10 @@ def process_issue(*, issue: Issue, settings: Settings) -> None:
     last_comment = get_last_comment(issue)
     for keyword, keyword_meta in settings.input_config.items():
         # Check closable delay, if enough time passed and the issue could be closed
-        closable_delay = False
-        if (
+        closable_delay = (
             last_comment is None
             or (datetime.utcnow() - keyword_meta.delay) > last_comment.created_at
-        ):
-            closable_delay = True
+        )
         # Check label, optionally removing it if there's a comment after adding it
         if keyword in label_strs:
             logging.info(f'Keyword: "{keyword}" in issue labels')
@@ -125,6 +123,10 @@ def process_issue(*, issue: Issue, settings: Settings) -> None:
                     label_strs=label_strs,
                 )
                 break
+            else:
+                logging.info(
+                    f"Not clossing issue: #{issue.number} as the delay hasn't been reached: {keyword_meta.delay}"
+                )
 
 
 if __name__ == "__main__":
