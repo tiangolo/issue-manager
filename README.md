@@ -386,6 +386,7 @@ It will also run after each comment or label added, with the specific issue that
 
 #### Internal
 
+* 🔧 Add funding. PR [#18](https://github.com/tiangolo/issue-manager/pull/18) by [@tiangolo](https://github.com/tiangolo).
 * 👷 Update dependabot. PR [#17](https://github.com/tiangolo/issue-manager/pull/17) by [@tiangolo](https://github.com/tiangolo).
 * 👷 Add latest-changes GitHub Action. PR [#16](https://github.com/tiangolo/issue-manager/pull/16) by [@tiangolo](https://github.com/tiangolo).
 
