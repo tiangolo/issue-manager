@@ -7,7 +7,8 @@ from github import Github
 from github.Issue import Issue
 from github.IssueComment import IssueComment
 from github.IssueEvent import IssueEvent
-from pydantic import BaseModel, BaseSettings, SecretStr, validator
+from pydantic import BaseModel, SecretStr, validator
+from pydantic_settings import BaseSettings
 
 
 class KeywordMeta(BaseModel):
