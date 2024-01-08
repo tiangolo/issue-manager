@@ -1,7 +1,11 @@
-FROM python:3.7
+FROM python:3.10
 
-RUN pip install "PyGithub>=1.55,<2.0" "pydantic>=v1.8.2,<2.0"
+COPY ./requirements.txt /code/requirements.txt
 
-COPY ./app /app
+RUN pip install -r /code/requirements.txt
 
-CMD ["python", "/app/main.py"]
+COPY ./app /code/app
+
+ENV PYTHONPATH=/code/app
+
+CMD ["python", "/code/app/main.py"]
