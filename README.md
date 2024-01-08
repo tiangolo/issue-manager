@@ -384,6 +384,10 @@ It will also run after each comment or label added, with the specific issue that
 
 ### Latest Changes
 
+#### Fixes
+
+* 🐛 Fix datetime comparison. PR [#19](https://github.com/tiangolo/issue-manager/pull/19) by [@tiangolo](https://github.com/tiangolo).
+
 #### Internal
 
 * 🔧 Add funding. PR [#18](https://github.com/tiangolo/issue-manager/pull/18) by [@tiangolo](https://github.com/tiangolo).
