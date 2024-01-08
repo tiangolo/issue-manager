@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import logging
 from pathlib import Path
 from typing import Dict, List, Optional, Set
@@ -93,11 +93,12 @@ def process_issue(*, issue: Issue, settings: Settings) -> None:
     events = list(issue.get_events())
     labeled_events = get_labeled_events(events)
     last_comment = get_last_comment(issue)
+    now = datetime.now(timezone.utc)
     for keyword, keyword_meta in settings.input_config.items():
         # Check closable delay, if enough time passed and the issue could be closed
         closable_delay = (
             last_comment is None
-            or (datetime.utcnow() - keyword_meta.delay) > last_comment.created_at
+            or (now - keyword_meta.delay) > last_comment.created_at
         )
         # Check label, optionally removing it if there's a comment after adding it
         if keyword in label_strs:
