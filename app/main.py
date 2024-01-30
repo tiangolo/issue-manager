@@ -1,11 +1,10 @@
-from datetime import datetime, timedelta, timezone
 import logging
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Dict, List, Optional, Set
 
 from github import Github
 from github.Issue import Issue
-from github.IssueComment import IssueComment
 from github.IssueEvent import IssueEvent
 from pydantic import BaseModel, SecretStr, validator
 from pydantic_settings import BaseSettings
@@ -13,7 +12,9 @@ from pydantic_settings import BaseSettings
 
 class KeywordMeta(BaseModel):
     delay: timedelta = timedelta(days=10)
-    message: str = "Assuming the original need was handled, this will be automatically closed now."
+    message: str = (
+        "Assuming the original need was handled, this will be automatically closed now."
+    )
     remove_label_on_comment: bool = True
     remove_label_on_close: bool = False
 
@@ -41,15 +42,31 @@ class PartialGitHubEvent(BaseModel):
     pull_request: Optional[PartialGitHubEventIssue] = None
 
 
-def get_last_comment(issue: Issue) -> Optional[IssueComment]:
-    last_comment: Optional[IssueComment] = None
-    comment: IssueComment
-    for comment in issue.get_comments():
-        if not last_comment:
-            last_comment = comment
-        elif comment.created_at > last_comment.created_at:
-            last_comment = comment
-    return last_comment
+def get_last_interaction_date(issue: Issue) -> Optional[datetime]:
+    last_date: Optional[datetime] = None
+    comments = list(issue.get_comments())
+    if issue.pull_request:
+        pr = issue.as_pull_request()
+        commits = list(pr.get_commits())
+        reviews = list(pr.get_reviews())
+        pr_comments = list(pr.get_comments())
+        interactions = comments + pr_comments
+        interaction_dates = [
+            interaction.created_at for interaction in interactions
+        ]
+        interaction_dates.extend(
+            [commit.commit.author.date for commit in commits]
+        )
+        interaction_dates.extend([review.submitted_at for review in reviews])
+    else:
+        interactions = comments
+        interaction_dates = [interaction.created_at for interaction in interactions]
+    for item_date in interaction_dates:
+        if not last_date:
+            last_date = item_date
+        elif item_date > last_date:
+            last_date = item_date
+    return last_date
 
 
 def get_labeled_events(events: List[IssueEvent]) -> List[IssueEvent]:
@@ -92,13 +109,12 @@ def process_issue(*, issue: Issue, settings: Settings) -> None:
     label_strs = set([label.name for label in issue.get_labels()])
     events = list(issue.get_events())
     labeled_events = get_labeled_events(events)
-    last_comment = get_last_comment(issue)
+    last_date = get_last_interaction_date(issue)
     now = datetime.now(timezone.utc)
     for keyword, keyword_meta in settings.input_config.items():
         # Check closable delay, if enough time passed and the issue could be closed
         closable_delay = (
-            last_comment is None
-            or (now - keyword_meta.delay) > last_comment.created_at
+            last_date is None or (now - keyword_meta.delay) > last_date
         )
         # Check label, optionally removing it if there's a comment after adding it
         if keyword in label_strs:
@@ -107,9 +123,9 @@ def process_issue(*, issue: Issue, settings: Settings) -> None:
                 labeled_events=labeled_events, label=keyword
             )
             if (
-                last_comment
+                last_date
                 and keyword_event
-                and last_comment.created_at > keyword_event.created_at
+                and last_date > keyword_event.created_at
             ):
                 logging.info(
                     f"Not closing as the last comment was written after adding the "
@@ -141,7 +157,7 @@ if __name__ == "__main__":
     github_event: Optional[PartialGitHubEvent] = None
     if settings.github_event_path.is_file():
         contents = settings.github_event_path.read_text()
-        github_event = PartialGitHubEvent.parse_raw(contents)
+        github_event = PartialGitHubEvent.model_validate_json(contents)
     if (
         settings.github_event_name == "issues"
         or settings.github_event_name == "pull_request_target"
