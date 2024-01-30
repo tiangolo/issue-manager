@@ -37,7 +37,7 @@ jobs:
 
 Then, you can answer an issue or PR and add the label from the config, in this case, `answered`.
 
-After 10 days, if no one has added a new comment, the GitHub action will write:
+After 10 days, if no one has added a new comment (or in the case of PRs, a new review or commit), the GitHub action will write:
 
 ```markdown
 Assuming the original need was handled, this will be automatically closed now.
@@ -140,7 +140,7 @@ And finally, if:
 
 * a PR has a label `needs-tests`
 * the label was added _after_ the last comment
-* the last comment was addded more than `691200` seconds (8 days) ago
+* the last comment was added more than `691200` seconds (8 days) ago
 
 ...the GitHub action would close the PR with:
 
@@ -336,7 +336,7 @@ on:
 * The `issues` option with a type of `label` will run it with each specific issue when you add a label.
     * This way you can add a label to an issue that was answered long ago, and if the configured delay since the last comment is enough the GitHub action will close the issue right away.
 * The `pull_request_target` option with a type of `label` will run it with each specific Pull Request made to your repo when you add a label.
-    * This way you can add a label to a PR that was answered long ago, or that was waiting for more comments from the author, etc. And if the configured delay since the last comment is enough the GitHub action will close the issue right away.
+    * This way you can add a label to a PR that was answered long ago, or that was waiting for more comments from the author, reviews, commits, etc. And if the configured delay since the last comment is enough the GitHub action will close the issue right away.
 * The `workflow_dispatch` option allows you to run the action manually from the GitHub Actions tab for your repo.
 
 ## Motivation
