@@ -384,6 +384,10 @@ It will also run after each comment or label added, with the specific issue that
 
 ### Latest Changes
 
+#### Features
+
+* ✨ Add first-class support for PRs, including reviews, review comments. PR [#20](https://github.com/tiangolo/issue-manager/pull/20) by [@tiangolo](https://github.com/tiangolo).
+
 ### 0.4.1
 
 #### Fixes
