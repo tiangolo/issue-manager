@@ -384,6 +384,10 @@ It will also run after each comment or label added, with the specific issue that
 
 ### Latest Changes
 
+#### Internal
+
+* 🔧 Add GitHub templates for discussions and issues, and security policy. PR [#22](https://github.com/tiangolo/issue-manager/pull/22) by [@alejsdev](https://github.com/alejsdev).
+
 ### 0.5.0
 
 #### Features
