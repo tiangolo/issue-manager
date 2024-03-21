@@ -72,9 +72,8 @@ body:
 
         Write a short description telling me what you are doing, what you expect to happen, and what is currently happening.
       placeholder: |
-        * Open the browser and call the endpoint `/`.
-        * It returns a JSON with `{"message": "Hello World"}`.
-        * But I expected it to return `{"message": "Hello Morty"}`.
+        * Add the label `auto-answer` to an issue.
+        * I expected this GitHub Action would use AI to write an answer automatically, but it didn't.
     validations:
       required: true
   - type: dropdown
