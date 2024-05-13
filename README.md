@@ -29,7 +29,7 @@ jobs:
   issue-manager:
     runs-on: ubuntu-latest
     steps:
-      - uses: tiangolo/issue-manager@0.4.0
+      - uses: tiangolo/issue-manager@0.6.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           config: '{"answered": {}}'
@@ -75,15 +75,17 @@ Imagine this JSON config:
     },
     "validated": {
         "delay": 300,
-        "message": "The issue could not be validated after 5 minutes. Closing now."
+        "message": "The issue could not be validated after 5 minutes. Closing now.",
+        "state_reason": "not_planned"
     },
     "waiting": {
         "delay": 691200,
-        "message": "Closing after 8 days of waiting for the additional info requested."
+        "message": "Closing after 8 days of waiting for the additional info requested.",
+        "state_reason": "not_planned"
     },
     "needs-tests": {
-      "delay": 691200,
-      "message": "This PR will be closed after waiting 8 days for tests to be added. Please create a new one with tests."
+        "delay": 691200,
+        "message": "This PR will be closed after waiting 8 days for tests to be added. Please create a new one with tests."
     }
 }
 ```
@@ -168,7 +170,13 @@ On top of not closing the issue, by default, it will remove the label. You can d
 
 After this GitHub action closes an issue it can also automatically remove the label from the issue when you pass the config `remove_label_on_close` set to `true`.
 
-By default it is false, and doesn't remove the label from the issue.
+By default, it is false, and doesn't remove the label from the issue.
+
+### Closing as "not planned"
+
+You may pass a config `state_reason` to customise how the issue should be closed. This field supports 2 values for now: `completed` or `not_planned`, but that might change in the future if GitHub adds more values in their API.
+
+By default, it is set to `completed`.
 
 ### Defaults
 
@@ -183,6 +191,7 @@ Assuming the original issue was solved, it will be automatically closed now.
 
 * `remove_label_on_comment`: True. If someone adds a comment after you added the label, it will remove the label from the issue.
 * `remove_label_on_close`: False. After this GitHub action closes the issue it would also remove the label from the issue.
+* `state_reason`: not_planned. This GitHub action closes the issue as `completed`.
 
 ### Config in the action
 
@@ -216,7 +225,7 @@ jobs:
   issue-manager:
     runs-on: ubuntu-latest
     steps:
-      - uses: tiangolo/issue-manager@0.4.0
+      - uses: tiangolo/issue-manager@0.6.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           config: >
@@ -227,11 +236,13 @@ jobs:
                 },
                 "validated": {
                     "delay": 300,
-                    "message": "The issue could not be validated after 5 minutes. Closing now."
+                    "message": "The issue could not be validated after 5 minutes. Closing now.",
+                    "state_reason": "not_planned"
                 },
                 "waiting": {
                     "delay": 691200,
-                    "message": "Closing after 8 days of waiting for the additional info requested."
+                    "message": "Closing after 8 days of waiting for the additional info requested.",
+                    "state_reason": "not_planned"
                 }
             }
 ```
@@ -282,7 +293,7 @@ jobs:
   issue-manager:
     runs-on: ubuntu-latest
     steps:
-      - uses: tiangolo/issue-manager@0.4.0
+      - uses: tiangolo/issue-manager@0.6.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           config: >
@@ -298,13 +309,15 @@ jobs:
                     "delay": 300,
                     "message": "The issue could not be validated after 5 minutes. Closing now.",
                     "remove_label_on_comment": true,
-                    "remove_label_on_close": false
+                    "remove_label_on_close": false,
+                    "state_reason": "not_planned"
                 },
                 "waiting": {
                     "delay": 691200,
                     "message": "Closing after 8 days of waiting for the additional info requested.",
                     "remove_label_on_comment": true,
-                    "remove_label_on_close": true
+                    "remove_label_on_close": true,
+                    "state_reason": "not_planned"
                 }
             }
 ```
