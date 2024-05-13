@@ -1,4 +1,5 @@
 import logging
+import typing
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Dict, List, Optional, Set
@@ -17,6 +18,7 @@ class KeywordMeta(BaseModel):
     )
     remove_label_on_comment: bool = True
     remove_label_on_close: bool = False
+    state_reason: typing.Literal["completed", "not_planned"] = "completed"
 
 
 class Settings(BaseSettings):
@@ -98,7 +100,7 @@ def close_issue(
         f"Clossing issue: #{issue.number} with message: {keyword_meta.message}"
     )
     issue.create_comment(keyword_meta.message)
-    issue.edit(state="closed")
+    issue.edit(state="closed", state_reason=keyword_meta.state_reason)
     if keyword_meta.remove_label_on_close:
         if keyword in label_strs:
             issue.remove_from_labels(keyword)

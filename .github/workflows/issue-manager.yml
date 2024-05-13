@@ -22,9 +22,9 @@ jobs:
         config: >
           {
             "answered":{
-                "delay": 300,
-                "users": ["mariacamilagl"],
-                "message": "This issue shall be closed."
+              "delay": 300,
+              "users": ["mariacamilagl"],
+              "message": "This issue shall be closed."
             },
             "more-info-needed": {
               "delay": 120,
