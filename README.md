@@ -25,6 +25,9 @@ on:
       - labeled
   workflow_dispatch:
 
+permissions:
+  issues: write
+
 jobs:
   issue-manager:
     runs-on: ubuntu-latest
@@ -212,6 +215,9 @@ on:
       - labeled
   workflow_dispatch:
 
+permissions:
+  issues: write
+
 jobs:
   issue-manager:
     runs-on: ubuntu-latest
@@ -278,6 +284,9 @@ on:
       - labeled
   workflow_dispatch:
 
+permissions:
+  issues: write
+
 jobs:
   issue-manager:
     runs-on: ubuntu-latest
@@ -338,6 +347,21 @@ on:
 * The `pull_request_target` option with a type of `label` will run it with each specific Pull Request made to your repo when you add a label.
     * This way you can add a label to a PR that was answered long ago, or that was waiting for more comments from the author, reviews, commits, etc. And if the configured delay since the last comment is enough the GitHub action will close the issue right away.
 * The `workflow_dispatch` option allows you to run the action manually from the GitHub Actions tab for your repo.
+
+## GitHub Action Permissions
+
+From the examples above you can see a section:
+
+```yml
+permissions:
+  issues: write
+```
+
+This is to give the GitHub Action the necessary permissions to write to the issues.
+
+When you add this GitHub Action to a personal repo, you might not need this specific permission.
+
+But when you add it to a repo that belongs to a GitHub organization, depending on the organization default configurations, you might need to explicitly set this permission.
 
 ## Motivation
 
