@@ -408,6 +408,10 @@ It will also run after each comment or label added, with the specific issue that
 
 ### Latest Changes
 
+#### Docs
+
+* 📝 Update docs about token permissions. PR [#27](https://github.com/tiangolo/issue-manager/pull/27) by [@tiangolo](https://github.com/tiangolo).
+
 #### Internal
 
 * 👷 Update issue-manager.yml GitHub Action permissions. PR [#26](https://github.com/tiangolo/issue-manager/pull/26) by [@tiangolo](https://github.com/tiangolo).
