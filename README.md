@@ -357,7 +357,7 @@ permissions:
   issues: write
 ```
 
-This is to give the GitHub action the necessary permissions to write to the issues.
+This is to give the GitHub Action the necessary permissions to write to the issues.
 
 When you add this GitHub Action to a personal repo, you might not need this specific permission.
 
