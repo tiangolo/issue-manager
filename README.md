@@ -386,6 +386,7 @@ It will also run after each comment or label added, with the specific issue that
 
 #### Internal
 
+* 👷 Update issue-manager.yml GitHub Action permissions. PR [#26](https://github.com/tiangolo/issue-manager/pull/26) by [@tiangolo](https://github.com/tiangolo).
 * 🔧 Add GitHub templates for discussions and issues, and security policy. PR [#22](https://github.com/tiangolo/issue-manager/pull/22) by [@alejsdev](https://github.com/alejsdev).
 
 ### 0.5.0
