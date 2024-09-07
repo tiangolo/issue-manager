@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - master
+      # TODO: fix this
+      - docker
   release:
     types:
       - published
@@ -39,7 +41,8 @@ jobs:
             ghcr.io/tiangolo/issue-manager:latest
           file: base.dockerfile
       - name: Build and push tag
-        if: github.event_name == 'release'
+        # TODO: fix this
+        # if: github.event_name == 'release'
         uses: docker/build-push-action@v5
         with:
           push: true
