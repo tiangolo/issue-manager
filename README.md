@@ -414,7 +414,7 @@ It will also run after each comment or label added, with the specific issue that
 
 #### Features
 
-* ⚡️ Improve speed by using Docker underneath. PR [#33](https://github.com/tiangolo/issue-manager/pull/33) by [@tiangolo](https://github.com/tiangolo).
+* ⚡️ Improve speed (from 23 seconds to 3 seconds) by using Docker underneath. PR [#33](https://github.com/tiangolo/issue-manager/pull/33) by [@tiangolo](https://github.com/tiangolo).
 
 #### Fixes
 
