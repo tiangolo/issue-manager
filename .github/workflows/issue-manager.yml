@@ -2,14 +2,17 @@ name: Issue Manager
 
 on:
   schedule:
-    - cron: "0 0 * * *"
+    - cron: "15 18 * * *"
   issue_comment:
     types:
       - created
-      - edited
   issues:
     types:
       - labeled
+  pull_request_target:
+    types:
+      - labeled
+  workflow_dispatch:
 
 permissions:
   issues: write
@@ -19,19 +22,17 @@ jobs:
   issue-manager:
     runs-on: ubuntu-latest
     steps:
-    - uses: tiangolo/issue-manager@master
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-
-        config: >
-          {
-            "answered":{
-                "delay": 300,
-                "users": ["mariacamilagl"],
-                "message": "This issue shall be closed."
-            },
-            "more-info-needed": {
-              "delay": 120,
-              "remove_label_on_close": true
+      - uses: tiangolo/issue-manager@0.5.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          config: >
+            {
+              "answered": {
+                "delay": 864000,
+                "message": "Assuming the original need was handled, this will be automatically closed now. But feel free to add more comments or create new issues or PRs."
+              },
+              "waiting": {
+                "delay": 2628000,
+                "message": "As this PR has been waiting for the original user for a while but seems to be inactive, it's now going to be closed. But if there's anyone interested, feel free to create a new PR."
+              }
             }
-          }
