@@ -7,10 +7,6 @@ on:
   release:
     types:
       - published
-  # TODO: fix this
-  pull_request:
-    branches:
-      - docker
 
 jobs:
   docker:
@@ -44,11 +40,7 @@ jobs:
         with:
           push: true
           platforms: linux/amd64,linux/arm64
-          # TODO: fix this
           tags: |
-            tiangolo/issue-manager:0.5.0
-            ghcr.io/tiangolo/issue-manager:0.5.0
-          # tags: |
-          #   tiangolo/issue-manager:${{ github.event.release.tag_name }}
-          #   ghcr.io/tiangolo/issue-manager:${{ github.event.release.tag_name }}
+            tiangolo/issue-manager:${{ github.event.release.tag_name }}
+            ghcr.io/tiangolo/issue-manager:${{ github.event.release.tag_name }}
           file: base.dockerfile
