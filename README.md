@@ -1,6 +1,6 @@
 # Issue Manager
 
-Automatically close issues or Pull Requests that have a **label**, after a **custom delay**, if no one replies back.
+Automatically close issues or pull requests that have a **label**, after a **custom delay**, if no one replies back.
 
 ## How to use
 
@@ -27,6 +27,7 @@ on:
 
 permissions:
   issues: write
+  pull-requests: write
 
 jobs:
   issue-manager:
@@ -217,6 +218,7 @@ on:
 
 permissions:
   issues: write
+  pull-requests: write
 
 jobs:
   issue-manager:
@@ -286,6 +288,7 @@ on:
 
 permissions:
   issues: write
+  pull-requests: write
 
 jobs:
   issue-manager:
@@ -355,9 +358,10 @@ From the examples above you can see a section:
 ```yml
 permissions:
   issues: write
+  pull-requests: write
 ```
 
-This is to give the GitHub Action the necessary permissions to write to the issues.
+This is to give the GitHub Action the necessary permissions to write to the issues and pull requests (including removing the label).
 
 When you add this GitHub Action to a personal repo, you might not need this specific permission.
 
