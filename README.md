@@ -33,7 +33,7 @@ jobs:
   issue-manager:
     runs-on: ubuntu-latest
     steps:
-      - uses: tiangolo/issue-manager@0.4.0
+      - uses: tiangolo/issue-manager@0.5.1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           config: '{"answered": {}}'
@@ -224,7 +224,7 @@ jobs:
   issue-manager:
     runs-on: ubuntu-latest
     steps:
-      - uses: tiangolo/issue-manager@0.4.0
+      - uses: tiangolo/issue-manager@0.5.1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           config: >
@@ -294,7 +294,7 @@ jobs:
   issue-manager:
     runs-on: ubuntu-latest
     steps:
-      - uses: tiangolo/issue-manager@0.4.0
+      - uses: tiangolo/issue-manager@0.5.1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           config: >
@@ -411,6 +411,8 @@ It will also run after each comment or label added, with the specific issue that
 ## Release Notes
 
 ### Latest Changes
+
+### 0.5.1
 
 #### Features
 
