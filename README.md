@@ -416,6 +416,10 @@ It will also run after each comment or label added, with the specific issue that
 
 * ⚡️ Improve speed by using Docker underneath. PR [#33](https://github.com/tiangolo/issue-manager/pull/33) by [@tiangolo](https://github.com/tiangolo).
 
+#### Fixes
+
+* 🐛 Fix Docker deploy on branch `master` (not `main`). PR [#34](https://github.com/tiangolo/issue-manager/pull/34) by [@tiangolo](https://github.com/tiangolo).
+
 #### Docs
 
 * 📝 Update docs and include `permissions` for `pull-request: write`. PR [#29](https://github.com/tiangolo/issue-manager/pull/29) by [@tiangolo](https://github.com/tiangolo).
