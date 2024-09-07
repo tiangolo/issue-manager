@@ -414,6 +414,7 @@ It will also run after each comment or label added, with the specific issue that
 
 #### Docs
 
+* 📝 Update docs and include `permissions` for `pull-request: write`. PR [#29](https://github.com/tiangolo/issue-manager/pull/29) by [@tiangolo](https://github.com/tiangolo).
 * 📝 Update docs about token permissions. PR [#27](https://github.com/tiangolo/issue-manager/pull/27) by [@tiangolo](https://github.com/tiangolo).
 
 #### Internal
