@@ -412,6 +412,10 @@ It will also run after each comment or label added, with the specific issue that
 
 ### Latest Changes
 
+#### Internal
+
+* ⬆ Bump docker/build-push-action from 5 to 6. PR [#35](https://github.com/tiangolo/issue-manager/pull/35) by [@dependabot[bot]](https://github.com/apps/dependabot).
+
 ### 0.5.1
 
 #### Features
