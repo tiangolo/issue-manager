@@ -414,6 +414,7 @@ It will also run after each comment or label added, with the specific issue that
 
 #### Internal
 
+* ⬆ Bump tiangolo/latest-changes from 0.3.1 to 0.3.2. PR [#36](https://github.com/tiangolo/issue-manager/pull/36) by [@dependabot[bot]](https://github.com/apps/dependabot).
 * ⬆ Bump docker/build-push-action from 5 to 6. PR [#35](https://github.com/tiangolo/issue-manager/pull/35) by [@dependabot[bot]](https://github.com/apps/dependabot).
 
 ### 0.5.1
