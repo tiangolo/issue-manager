@@ -33,6 +33,17 @@
                 "title": "Remove Label On Close",
                 "default": false,
                 "type": "boolean"
+            },
+            "remind_before_close_delay": {
+                "title": "Delay",
+                "default": null,
+                "type": "number",
+                "format": "time-delta"
+            },
+            "remind_before_close_message": {
+                "title": "Message",
+                "default": "",
+                "type": "string"
             }
         }
     }
