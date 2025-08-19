@@ -34,16 +34,22 @@
                 "default": false,
                 "type": "boolean"
             },
-            "remind_before_close_delay": {
-                "title": "Delay",
-                "default": null,
-                "type": "number",
-                "format": "time-delta"
-            },
-            "remind_before_close_message": {
-                "title": "Message",
-                "default": "",
-                "type": "string"
+            "reminder": {
+                "title": "Reminder",
+                "type": "object",
+                "properties": {
+                    "delay": {
+                        "title": "Delay",
+                        "default": 86400.0,
+                        "type": "number",
+                        "format": "time-delta"
+                    },
+                    "message": {
+                        "title": "Message",
+                        "default": "This issue will be closed automatically in 1 day if no further activity.",
+                        "type": "string"
+                    }
+                }
             }
         }
     }
