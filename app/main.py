@@ -51,12 +51,8 @@ def get_last_interaction_date(issue: Issue) -> Optional[datetime]:
         reviews = list(pr.get_reviews())
         pr_comments = list(pr.get_comments())
         interactions = comments + pr_comments
-        interaction_dates = [
-            interaction.created_at for interaction in interactions
-        ]
-        interaction_dates.extend(
-            [commit.commit.author.date for commit in commits]
-        )
+        interaction_dates = [interaction.created_at for interaction in interactions]
+        interaction_dates.extend([commit.commit.author.date for commit in commits])
         interaction_dates.extend([review.submitted_at for review in reviews])
     else:
         interactions = comments
@@ -113,20 +109,14 @@ def process_issue(*, issue: Issue, settings: Settings) -> None:
     now = datetime.now(timezone.utc)
     for keyword, keyword_meta in settings.input_config.items():
         # Check closable delay, if enough time passed and the issue could be closed
-        closable_delay = (
-            last_date is None or (now - keyword_meta.delay) > last_date
-        )
+        closable_delay = last_date is None or (now - keyword_meta.delay) > last_date
         # Check label, optionally removing it if there's a comment after adding it
         if keyword in label_strs:
             logging.info(f'Keyword: "{keyword}" in issue labels')
             keyword_event = get_last_event_for_label(
                 labeled_events=labeled_events, label=keyword
             )
-            if (
-                last_date
-                and keyword_event
-                and last_date > keyword_event.created_at
-            ):
+            if last_date and keyword_event and last_date > keyword_event.created_at:
                 logging.info(
                     f"Not closing as the last comment was written after adding the "
                     f'label: "{keyword}"'
