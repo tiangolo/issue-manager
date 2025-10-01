@@ -10,9 +10,7 @@ inputs:
     required: true
 runs:
   using: 'docker'
-  # TODO: fix this
-  # image: 'Dockerfile'
-  image: base.dockerfile
+  image: 'Dockerfile'
 branding:
   icon: 'check-circle'  
   color: 'green'
