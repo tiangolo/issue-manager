@@ -85,7 +85,7 @@ Imagine this JSON config:
         "delay": 691200,
         "message": "Closing after 8 days of waiting for the additional info requested.",
         "reminder": {
-            "delay": "P3D",
+            "before": "P3D",
             "message": "Heads-up: this will be closed in ~3 days unless there’s new activity."
         }
     },
@@ -188,7 +188,7 @@ By default it is false, and doesn't remove the label from the issue.
 
 Each label can also define an optional reminder with:
 
-* `delay`: How long before the issue/PR would be closed to send the reminder.
+* `before`: How long before the issue/PR would be closed to send the reminder.
   Must be shorter than the main `delay`.
   Supports ISO 8601 durations (e.g. `P3D`) or seconds.
 * `message`: The text to post as a comment.
@@ -202,7 +202,7 @@ Example:
     "delay": 691200,
     "message": "Closing after 8 days of waiting for the additional info requested.",
     "reminder": {
-        "delay": "P3D",
+        "before": "P3D",
         "message": "Heads-up: this will be closed in ~3 days unless there’s new activity."
     }
 }
@@ -276,7 +276,7 @@ jobs:
                     "delay": 691200,
                     "message": "Closing after 8 days of waiting for the additional info requested.",
                     "reminder": {
-                        "delay": "P3D",
+                        "before": "P3D",
                         "message": "Heads-up: this will be closed in ~3 days unless there’s new activity."
                     }
                 }
@@ -357,7 +357,7 @@ jobs:
                     "remove_label_on_comment": true,
                     "remove_label_on_close": true,
                     "reminder": {
-                        "delay": "P3D",
+                        "before": "P3D",
                         "message": "Heads-up: this will be closed in ~3 days unless there’s new activity."
                     }
                 }
