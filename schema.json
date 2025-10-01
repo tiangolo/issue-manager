@@ -33,6 +33,23 @@
                 "title": "Remove Label On Close",
                 "default": false,
                 "type": "boolean"
+            },
+            "reminder": {
+                "title": "Reminder",
+                "type": "object",
+                "properties": {
+                    "before": {
+                        "title": "Before",
+                        "default": 86400.0,
+                        "type": "number",
+                        "format": "time-delta"
+                    },
+                    "message": {
+                        "title": "Message",
+                        "default": "This will be closed automatically soon if there's no further activity.",
+                        "type": "string"
+                    }
+                }
             }
         }
     }

@@ -2,12 +2,24 @@ import logging
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Dict, List, Optional, Set
+from typing_extensions import Literal
 
 from github import Github
+from github.PaginatedList import PaginatedList
+from github.IssueComment import IssueComment
 from github.Issue import Issue
 from github.IssueEvent import IssueEvent
 from pydantic import BaseModel, SecretStr, validator
 from pydantic_settings import BaseSettings
+
+REMINDER_MARKER = "<!-- reminder -->"
+
+
+class Reminder(BaseModel):
+    message: str = (
+        "This will be closed automatically soon if there's no further activity."
+    )
+    before: timedelta = timedelta(days=1)
 
 
 class KeywordMeta(BaseModel):
@@ -17,6 +29,7 @@ class KeywordMeta(BaseModel):
     )
     remove_label_on_comment: bool = True
     remove_label_on_close: bool = False
+    reminder: Optional[Reminder] = None
 
 
 class Settings(BaseSettings):
@@ -42,9 +55,26 @@ class PartialGitHubEvent(BaseModel):
     pull_request: Optional[PartialGitHubEventIssue] = None
 
 
+def filter_comments(
+    comments: PaginatedList[IssueComment], include: Literal["regular", "reminder"]
+) -> list[IssueComment]:
+    if include == "regular":
+        return [
+            comment
+            for comment in comments
+            if not comment.body.startswith(REMINDER_MARKER)
+        ]
+    elif include == "reminder":
+        return [
+            comment for comment in comments if comment.body.startswith(REMINDER_MARKER)
+        ]
+    else:
+        raise ValueError(f"Unsupported value of include ({include})")
+
+
 def get_last_interaction_date(issue: Issue) -> Optional[datetime]:
     last_date: Optional[datetime] = None
-    comments = list(issue.get_comments())
+    comments = filter_comments(issue.get_comments(), include="regular")
     if issue.pull_request:
         pr = issue.as_pull_request()
         commits = list(pr.get_commits())
@@ -87,6 +117,19 @@ def get_last_event_for_label(
     return last_event
 
 
+def get_last_reminder_date(issue: Issue) -> Optional[datetime]:
+    """Get date of last reminder message was sent"""
+    last_date: Optional[datetime] = None
+    comments = filter_comments(issue.get_comments(), include="reminder")
+    comment_dates = [comment.created_at for comment in comments]
+    for item_date in comment_dates:
+        if not last_date:
+            last_date = item_date
+        elif item_date > last_date:
+            last_date = item_date
+    return last_date
+
+
 def close_issue(
     *, issue: Issue, keyword_meta: KeywordMeta, keyword: str, label_strs: Set[str]
 ) -> None:
@@ -106,6 +149,7 @@ def process_issue(*, issue: Issue, settings: Settings) -> None:
     events = list(issue.get_events())
     labeled_events = get_labeled_events(events)
     last_date = get_last_interaction_date(issue)
+    last_reminder_date = get_last_reminder_date(issue)
     now = datetime.now(timezone.utc)
     for keyword, keyword_meta in settings.input_config.items():
         # Check closable delay, if enough time passed and the issue could be closed
@@ -116,6 +160,19 @@ def process_issue(*, issue: Issue, settings: Settings) -> None:
             keyword_event = get_last_event_for_label(
                 labeled_events=labeled_events, label=keyword
             )
+            # Check if we need to send a reminder
+            need_send_reminder = False
+            if keyword_meta.reminder and keyword_event:
+                scheduled_close_date = keyword_event.created_at + keyword_meta.delay
+                remind_time = (  # Time point after which we should send reminder
+                    scheduled_close_date - keyword_meta.reminder.before
+                )
+                need_send_reminder = (
+                    (now > remind_time)  # It's time to send reminder
+                    and (  # .. and it hasn't been sent yet
+                        not last_reminder_date or (last_reminder_date < remind_time)
+                    )
+                )
             if last_date and keyword_event and last_date > keyword_event.created_at:
                 logging.info(
                     f"Not closing as the last comment was written after adding the "
@@ -124,6 +181,11 @@ def process_issue(*, issue: Issue, settings: Settings) -> None:
                 if keyword_meta.remove_label_on_comment:
                     logging.info(f'Removing label: "{keyword}"')
                     issue.remove_from_labels(keyword)
+            elif need_send_reminder and keyword_meta.reminder:
+                message = keyword_meta.reminder.message
+                logging.info(f"Sending reminder: #{issue.number} with message: {message}")
+                issue.create_comment(f"{REMINDER_MARKER}\n{message}")
+                break
             elif closable_delay:
                 close_issue(
                     issue=issue,

@@ -83,7 +83,11 @@ Imagine this JSON config:
     },
     "waiting": {
         "delay": 691200,
-        "message": "Closing after 8 days of waiting for the additional info requested."
+        "message": "Closing after 8 days of waiting for the additional info requested.",
+        "reminder": {
+            "before": "P3D",
+            "message": "Heads-up: this will be closed in ~3 days unless there’s new activity."
+        }
     },
     "needs-tests": {
       "delay": 691200,
@@ -130,7 +134,13 @@ Then, if:
 * the label was added _after_ the last comment
 * the last comment was addded more than `691200` seconds (8 days) ago
 
-...the GitHub action would close the issue with:
+...the GitHub action would send a reminder on day 5 (because the delay is 8 days and the reminder is set to 3 days before closing):
+
+```markdown
+Heads-up: this will be closed in ~3 days unless there’s new activity.
+```
+
+...and if there is still no activity, it would finally close the issue with:
 
 ```markdown
 Closing after 10 days of waiting for the additional info requested.
@@ -174,6 +184,30 @@ After this GitHub action closes an issue it can also automatically remove the la
 
 By default it is false, and doesn't remove the label from the issue.
 
+### Reminder
+
+Each label can also define an optional reminder with:
+
+* `before`: How long before the issue/PR would be closed to send the reminder.
+  Must be shorter than the main `delay`.
+  Supports ISO 8601 durations (e.g. `P3D`) or seconds.
+* `message`: The text to post as a comment.
+
+The reminder is just a comment, it does not close the issue or PR.
+
+Example:
+
+```json
+"waiting": {
+    "delay": 691200,
+    "message": "Closing after 8 days of waiting for the additional info requested.",
+    "reminder": {
+        "before": "P3D",
+        "message": "Heads-up: this will be closed in ~3 days unless there’s new activity."
+    }
+}
+
+
 ### Defaults
 
 By default, any config has:
@@ -187,6 +221,7 @@ Assuming the original issue was solved, it will be automatically closed now.
 
 * `remove_label_on_comment`: True. If someone adds a comment after you added the label, it will remove the label from the issue.
 * `remove_label_on_close`: False. After this GitHub action closes the issue it would also remove the label from the issue.
+* `reminder`: None. No reminder will be sent unless explicitly configured.
 
 ### Config in the action
 
@@ -239,7 +274,11 @@ jobs:
                 },
                 "waiting": {
                     "delay": 691200,
-                    "message": "Closing after 8 days of waiting for the additional info requested."
+                    "message": "Closing after 8 days of waiting for the additional info requested.",
+                    "reminder": {
+                        "before": "P3D",
+                        "message": "Heads-up: this will be closed in ~3 days unless there’s new activity."
+                    }
                 }
             }
 ```
@@ -316,7 +355,11 @@ jobs:
                     "delay": 691200,
                     "message": "Closing after 8 days of waiting for the additional info requested.",
                     "remove_label_on_comment": true,
-                    "remove_label_on_close": true
+                    "remove_label_on_close": true,
+                    "reminder": {
+                        "before": "P3D",
+                        "message": "Heads-up: this will be closed in ~3 days unless there’s new activity."
+                    }
                 }
             }
 ```
@@ -402,6 +445,7 @@ Then, this action, by running every night (or however you configure it) will, fo
 * Check if the issue has one of the configured labels.
 * Check if the label was added _after_ the last comment.
 * If not, remove the label (configurable).
+* If a reminder is configured and its time has arrived, post the reminder comment.
 * Check if the current date-time is more than the configured *delay* to wait for the user to reply back (configurable).
 * Then, if all that matches, it will add a comment with a message (configurable).
 * And then it will close the issue.
