@@ -456,6 +456,8 @@ It will also run after each comment or label added, with the specific issue that
 
 ### Latest Changes
 
+* ✨ Add configurable reminder before closing issue. PR [#39](https://github.com/tiangolo/issue-manager/pull/39) by [@YuriiMotov](https://github.com/YuriiMotov).
+
 #### Internal
 
 * 🎨 Format code with Ruff, to make reviews easier. PR [#40](https://github.com/tiangolo/issue-manager/pull/40) by [@tiangolo](https://github.com/tiangolo).
