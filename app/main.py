@@ -16,8 +16,10 @@ REMINDER_MARKER = "<!-- reminder -->"
 
 
 class Reminder(BaseModel):
-    message: str = "This issue will be closed automatically in 1 day if no further activity."
-    delay: timedelta = timedelta(days=1)
+    message: str = (
+        "This will be closed automatically soon if there's no further activity."
+    )
+    before: timedelta = timedelta(days=1)
 
 
 class KeywordMeta(BaseModel):
@@ -141,13 +143,6 @@ def close_issue(
             issue.remove_from_labels(keyword)
 
 
-def send_reminder(*, issue: Issue, keyword_meta: KeywordMeta) -> None:
-    assert keyword_meta.reminder is not None
-    message = keyword_meta.reminder.message
-    logging.info(f"Send reminder: #{issue.number} with message: {message}")
-    issue.create_comment(f"{REMINDER_MARKER}\n{message}")
-
-
 def process_issue(*, issue: Issue, settings: Settings) -> None:
     logging.info(f"Processing issue: #{issue.number}")
     label_strs = set([label.name for label in issue.get_labels()])
@@ -166,11 +161,11 @@ def process_issue(*, issue: Issue, settings: Settings) -> None:
                 labeled_events=labeled_events, label=keyword
             )
             # Check if we need to send a reminder
-            scheduled_close_date = keyword_event.created_at + keyword_meta.delay
             need_send_reminder = False
-            if keyword_meta.reminder and keyword_meta.reminder.delay:
+            if keyword_meta.reminder and keyword_event:
+                scheduled_close_date = keyword_event.created_at + keyword_meta.delay
                 remind_time = (  # Time point after which we should send reminder
-                    scheduled_close_date - keyword_meta.reminder.delay
+                    scheduled_close_date - keyword_meta.reminder.before
                 )
                 need_send_reminder = (
                     (now > remind_time)  # It's time to send reminder
@@ -186,8 +181,10 @@ def process_issue(*, issue: Issue, settings: Settings) -> None:
                 if keyword_meta.remove_label_on_comment:
                     logging.info(f'Removing label: "{keyword}"')
                     issue.remove_from_labels(keyword)
-            elif need_send_reminder:
-                send_reminder(issue=issue, keyword_meta=keyword_meta)
+            elif need_send_reminder and keyword_meta.reminder:
+                message = keyword_meta.reminder.message
+                logging.info(f"Sending reminder: #{issue.number} with message: {message}")
+                issue.create_comment(f"{REMINDER_MARKER}\n{message}")
                 break
             elif closable_delay:
                 close_issue(
