@@ -206,7 +206,7 @@ Example:
         "message": "Heads-up: this will be closed in ~3 days unless there’s new activity."
     }
 }
-
+```
 
 ### Defaults
 
