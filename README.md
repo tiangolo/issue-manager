@@ -456,6 +456,10 @@ It will also run after each comment or label added, with the specific issue that
 
 ### Latest Changes
 
+#### Docs
+
+* 📝 Fix formatting in `README.md`. PR [#41](https://github.com/tiangolo/issue-manager/pull/41) by [@tiangolo](https://github.com/tiangolo).
+
 ### 0.6.0
 
 * ✨ Add configurable reminder before closing issue. PR [#39](https://github.com/tiangolo/issue-manager/pull/39) by [@YuriiMotov](https://github.com/YuriiMotov).
