@@ -462,6 +462,7 @@ It will also run after each comment or label added, with the specific issue that
 
 #### Internal
 
+* 👷 Upgrade actions/checkout from v5 to v6. PR [#44](https://github.com/tiangolo/issue-manager/pull/44) by [@tiangolo](https://github.com/tiangolo).
 * 👷 Upgrade `latest-changes` GitHub Action and pin `actions/checkout@v5`. PR [#43](https://github.com/tiangolo/issue-manager/pull/43) by [@tiangolo](https://github.com/tiangolo).
 * ⬆ Bump actions/checkout from 4 to 5. PR [#38](https://github.com/tiangolo/issue-manager/pull/38) by [@dependabot[bot]](https://github.com/apps/dependabot).
 * ⬆ Bump tiangolo/latest-changes from 0.3.2 to 0.4.0. PR [#37](https://github.com/tiangolo/issue-manager/pull/37) by [@dependabot[bot]](https://github.com/apps/dependabot).
