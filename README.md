@@ -456,6 +456,8 @@ It will also run after each comment or label added, with the specific issue that
 
 ### Latest Changes
 
+* ⬆️ Update Dependabot ecosystem coverage. PR [#51](https://github.com/tiangolo/issue-manager/pull/51) by [@tiangolo](https://github.com/tiangolo).
+
 #### Docs
 
 * 📝 Fix formatting in `README.md`. PR [#41](https://github.com/tiangolo/issue-manager/pull/41) by [@tiangolo](https://github.com/tiangolo).
