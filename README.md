@@ -464,6 +464,7 @@ It will also run after each comment or label added, with the specific issue that
 
 #### Internal
 
+* ⬆️ Group Dependabot updates. PR [#53](https://github.com/tiangolo/issue-manager/pull/53) by [@tiangolo](https://github.com/tiangolo).
 * ⬆ Bump the python-packages group across 1 directory with 2 updates. PR [#45](https://github.com/tiangolo/issue-manager/pull/45) by [@dependabot[bot]](https://github.com/apps/dependabot).
 * ⬆ Bump the github-actions group across 1 directory with 4 updates. PR [#49](https://github.com/tiangolo/issue-manager/pull/49) by [@dependabot[bot]](https://github.com/apps/dependabot).
 * 🔥 Remove config files now in central GitHub repo. PR [#47](https://github.com/tiangolo/issue-manager/pull/47) by [@tiangolo](https://github.com/tiangolo).
