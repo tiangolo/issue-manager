@@ -489,6 +489,10 @@ It will also run after each comment or label added, with the specific issue that
 
 ### Latest Changes
 
+#### Internal
+
+* ⬆ Bump zizmorcore/zizmor-action from 0.5.3 to 0.5.6 in the github-actions group across 1 directory. PR [#55](https://github.com/tiangolo/issue-manager/pull/55) by [@dependabot[bot]](https://github.com/apps/dependabot).
+
 ### 0.7.0
 
 #### Features
