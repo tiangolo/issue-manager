@@ -33,7 +33,7 @@ jobs:
   issue-manager:
     runs-on: ubuntu-latest
     steps:
-      - uses: tiangolo/issue-manager@0.6.0
+      - uses: tiangolo/issue-manager@0.7.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 ```
@@ -292,7 +292,7 @@ jobs:
   issue-manager:
     runs-on: ubuntu-latest
     steps:
-      - uses: tiangolo/issue-manager@0.6.0
+      - uses: tiangolo/issue-manager@0.7.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           config: >
@@ -366,7 +366,7 @@ jobs:
   issue-manager:
     runs-on: ubuntu-latest
     steps:
-      - uses: tiangolo/issue-manager@0.6.0
+      - uses: tiangolo/issue-manager@0.7.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           config: >
@@ -489,7 +489,7 @@ It will also run after each comment or label added, with the specific issue that
 
 ### Latest Changes
 
-* ⬆️ Update Dependabot ecosystem coverage. PR [#51](https://github.com/tiangolo/issue-manager/pull/51) by [@tiangolo](https://github.com/tiangolo).
+### 0.7.0
 
 #### Features
 
@@ -510,6 +510,7 @@ It will also run after each comment or label added, with the specific issue that
 * 👷 Upgrade `latest-changes` GitHub Action and pin `actions/checkout@v5`. PR [#43](https://github.com/tiangolo/issue-manager/pull/43) by [@tiangolo](https://github.com/tiangolo).
 * ⬆ Bump actions/checkout from 4 to 5. PR [#38](https://github.com/tiangolo/issue-manager/pull/38) by [@dependabot[bot]](https://github.com/apps/dependabot).
 * ⬆ Bump tiangolo/latest-changes from 0.3.2 to 0.4.0. PR [#37](https://github.com/tiangolo/issue-manager/pull/37) by [@dependabot[bot]](https://github.com/apps/dependabot).
+* ⬆️ Update Dependabot ecosystem coverage. PR [#51](https://github.com/tiangolo/issue-manager/pull/51) by [@tiangolo](https://github.com/tiangolo).
 
 ### 0.6.0
 
