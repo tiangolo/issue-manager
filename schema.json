@@ -21,7 +21,7 @@
             },
             "message": {
                 "title": "Message",
-                "default": "Assuming the original issue was solved, it will be automatically closed now.",
+                "default": "Assuming the original need was handled, this will be automatically closed now. But feel free to add more comments or start a new conversation if needed.",
                 "type": "string"
             },
             "remove_label_on_comment": {
