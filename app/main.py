@@ -1,7 +1,7 @@
 import logging
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
-from typing import Dict, List, Optional, Set
+from typing import Any, Dict, List, Optional, Set
 from typing_extensions import Literal
 
 from github import Github
@@ -9,10 +9,53 @@ from github.PaginatedList import PaginatedList
 from github.IssueComment import IssueComment
 from github.Issue import Issue
 from github.IssueEvent import IssueEvent
-from pydantic import BaseModel, SecretStr, validator
+from pydantic import BaseModel, Field, SecretStr, validator
 from pydantic_settings import BaseSettings
 
 REMINDER_MARKER = "<!-- reminder -->"
+ANSWERED_MESSAGE = (
+    "Assuming the original need was handled, this will be automatically closed now. "
+    "But feel free to add more comments or start a new conversation if needed."
+)
+WAITING_MESSAGE = (
+    "This has been waiting for the original user for a while and seems to be "
+    "inactive, so it will be closed now. If there's still interest, feel free to "
+    "start a new conversation."
+)
+WAITING_REMINDER_MESSAGE = (
+    "Heads-up: this will be closed in 3 days unless there's new activity."
+)
+INVALID_MESSAGE = (
+    "This was marked as invalid and will be closed now. If this is an error, "
+    "please provide additional details."
+)
+MAYBE_AI_MESSAGE = (
+    "This was marked as potentially AI generated and will be closed now. If this "
+    "is an error, please provide additional details, make sure to read the docs "
+    "about contributing and AI."
+)
+DEFAULT_CONFIG: Dict[str, Dict[str, Any]] = {
+    "answered": {
+        "delay": 864000,
+        "message": ANSWERED_MESSAGE,
+    },
+    "waiting": {
+        "delay": 2628000,
+        "message": WAITING_MESSAGE,
+        "reminder": {
+            "before": "P3D",
+            "message": WAITING_REMINDER_MESSAGE,
+        },
+    },
+    "invalid": {
+        "delay": 0,
+        "message": INVALID_MESSAGE,
+    },
+    "maybe-ai": {
+        "delay": 0,
+        "message": MAYBE_AI_MESSAGE,
+    },
+}
 
 
 class Reminder(BaseModel):
@@ -24,16 +67,14 @@ class Reminder(BaseModel):
 
 class KeywordMeta(BaseModel):
     delay: timedelta = timedelta(days=10)
-    message: str = (
-        "Assuming the original need was handled, this will be automatically closed now."
-    )
+    message: str = ANSWERED_MESSAGE
     remove_label_on_comment: bool = True
     remove_label_on_close: bool = False
     reminder: Optional[Reminder] = None
 
 
 class Settings(BaseSettings):
-    input_config: Dict[str, KeywordMeta]
+    input_config: Dict[str, KeywordMeta] = Field(default_factory=lambda: DEFAULT_CONFIG)
     github_repository: str
     input_token: SecretStr
     github_event_path: Path
@@ -41,7 +82,10 @@ class Settings(BaseSettings):
 
     @validator("input_config", pre=True)
     def discard_schema(cls, v):
+        if not v:
+            return DEFAULT_CONFIG
         if "$schema" in v:
+            v = v.copy()
             del v["$schema"]
         return v
 

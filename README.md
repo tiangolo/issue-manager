@@ -36,15 +36,19 @@ jobs:
       - uses: tiangolo/issue-manager@0.6.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          config: '{"answered": {}}'
 ```
 
-Then, you can answer an issue or PR and add the label from the config, in this case, `answered`.
+Then, you can answer an issue or PR and add one of the default labels:
 
-After 10 days, if no one has added a new comment (or in the case of PRs, a new review or commit), the GitHub action will write:
+* `answered`
+* `waiting`
+* `invalid`
+* `maybe-ai`
+
+For example, after adding `answered`, if no one has added a new comment after 10 days (or in the case of PRs, a new review or commit), the GitHub action will write:
 
 ```markdown
-Assuming the original need was handled, this will be automatically closed now.
+Assuming the original need was handled, this will be automatically closed now. But feel free to add more comments or start a new conversation if needed.
 ```
 
 And then it will close the issue.
@@ -55,7 +59,9 @@ But if someone adds a comment _after_ you added the label, this GitHub Action wi
 
 You can use any file name you want, `issue-manager.yml` is just a suggestion. But it has to be inside of `.github/workflows/` and have a `.yml` extension.
 
-If you check, the `config` in that file `issue-manager.yml` above has a `string`, and inside the string there's a whole JSON configuration:
+By default, the action manages the labels `answered`, `waiting`, `invalid`, and `maybe-ai`.
+
+You can override those defaults with a custom `config` input. The `config` has a `string`, and inside the string there's a whole JSON configuration:
 
 ```JSON
 {"answered": {}}
@@ -67,7 +73,7 @@ If you check, the `config` in that file `issue-manager.yml` above has a `string`
 '{"answered": {}}'
 ```
 
-This JSON configuration (inside a string) is what allows us to add multiple custom labels, with different delays, and different messages.
+This JSON configuration (inside a string) is what allows you to add custom labels, with different delays, and different messages.
 
 Imagine this JSON config:
 
@@ -210,13 +216,40 @@ Example:
 
 ### Defaults
 
-By default, any config has:
+By default, if no `config` is provided, Issue Manager uses:
+
+```json
+{
+    "answered": {
+        "delay": 864000,
+        "message": "Assuming the original need was handled, this will be automatically closed now. But feel free to add more comments or start a new conversation if needed."
+    },
+    "waiting": {
+        "delay": 2628000,
+        "message": "This has been waiting for the original user for a while and seems to be inactive, so it will be closed now. If there's still interest, feel free to start a new conversation.",
+        "reminder": {
+            "before": "P3D",
+            "message": "Heads-up: this will be closed in 3 days unless there's new activity."
+        }
+    },
+    "invalid": {
+        "delay": 0,
+        "message": "This was marked as invalid and will be closed now. If this is an error, please provide additional details."
+    },
+    "maybe-ai": {
+        "delay": 0,
+        "message": "This was marked as potentially AI generated and will be closed now. If this is an error, please provide additional details, make sure to read the docs about contributing and AI."
+    }
+}
+```
+
+By default, any label config has:
 
 * `delay`: A delay of 10 days.
 * `message`: A message of:
 
 ```markdown
-Assuming the original issue was solved, it will be automatically closed now.
+Assuming the original need was handled, this will be automatically closed now. But feel free to add more comments or start a new conversation if needed.
 ```
 
 * `remove_label_on_comment`: True. If someone adds a comment after you added the label, it will remove the label from the issue.
