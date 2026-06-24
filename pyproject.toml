@@ -7,3 +7,8 @@ dependencies = [
     "pydantic>=2.13.4,<3.0.0",
     "pydantic-settings>=2.14.1,<3.0.0",
 ]
+
+[dependency-groups]
+dev = [
+    "typer>=0.20.0,<1.0.0",
+]
