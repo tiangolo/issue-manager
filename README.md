@@ -491,6 +491,7 @@ It will also run after each comment or label added, with the specific issue that
 
 #### Internal
 
+* ♻️ Migrate from plain pip to uv. PR [#60](https://github.com/tiangolo/issue-manager/pull/60) by [@tiangolo](https://github.com/tiangolo).
 * 👷 Update issue-manager to 0.7.1. PR [#59](https://github.com/tiangolo/issue-manager/pull/59) by [@tiangolo](https://github.com/tiangolo).
 
 ### 0.7.1
