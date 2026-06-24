@@ -1,3 +1,0 @@
-PyGithub
-pydantic>=2.13.4,<3.0.0
-pydantic-settings>=2.14.1,<3.0.0
