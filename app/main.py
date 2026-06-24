@@ -10,7 +10,7 @@ from github.IssueComment import IssueComment
 from github.Issue import Issue
 from github.IssueEvent import IssueEvent
 from pydantic import BaseModel, Field, SecretStr, validator
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 REMINDER_MARKER = "<!-- reminder -->"
 ANSWERED_MESSAGE = (
@@ -74,6 +74,8 @@ class KeywordMeta(BaseModel):
 
 
 class Settings(BaseSettings):
+    model_config = SettingsConfigDict(env_ignore_empty=True)
+
     input_config: Dict[str, KeywordMeta] = Field(default_factory=lambda: DEFAULT_CONFIG)
     github_repository: str
     input_token: SecretStr
