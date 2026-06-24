@@ -8,6 +8,7 @@
 
 ### Internal
 
+* ⬆ Bump actions/checkout from 6.0.3 to 7.0.0 in the github-actions group. PR [#61](https://github.com/tiangolo/issue-manager/pull/61) by [@dependabot[bot]](https://github.com/apps/dependabot).
 * 👷 Add CI to automate release process. PR [#65](https://github.com/tiangolo/issue-manager/pull/65) by [@tiangolo](https://github.com/tiangolo).
 * 📝 Refactor release notes, move to its own file. PR [#64](https://github.com/tiangolo/issue-manager/pull/64) by [@tiangolo](https://github.com/tiangolo).
 * ♻️ Migrate from plain pip to uv. PR [#60](https://github.com/tiangolo/issue-manager/pull/60) by [@tiangolo](https://github.com/tiangolo).
