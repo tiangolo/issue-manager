@@ -489,6 +489,10 @@ It will also run after each comment or label added, with the specific issue that
 
 ### Latest Changes
 
+#### Refactors
+
+* ♻️ Refactor main Dockerfile to contain all logic, cache by uv. PR [#62](https://github.com/tiangolo/issue-manager/pull/62) by [@tiangolo](https://github.com/tiangolo).
+
 #### Internal
 
 * ♻️ Migrate from plain pip to uv. PR [#60](https://github.com/tiangolo/issue-manager/pull/60) by [@tiangolo](https://github.com/tiangolo).
