@@ -489,6 +489,10 @@ It will also run after each comment or label added, with the specific issue that
 
 ### Latest Changes
 
+#### Fixes
+
+* 🐛 Fix parsing empty config. PR [#58](https://github.com/tiangolo/issue-manager/pull/58) by [@tiangolo](https://github.com/tiangolo).
+
 #### Internal
 
 * ⬆️ Update issue-manager to 0.7.0. PR [#57](https://github.com/tiangolo/issue-manager/pull/57) by [@tiangolo](https://github.com/tiangolo).
