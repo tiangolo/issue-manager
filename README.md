@@ -489,6 +489,8 @@ It will also run after each comment or label added, with the specific issue that
 
 ### Latest Changes
 
+### 0.7.1
+
 #### Fixes
 
 * 🐛 Fix parsing empty config. PR [#58](https://github.com/tiangolo/issue-manager/pull/58) by [@tiangolo](https://github.com/tiangolo).
