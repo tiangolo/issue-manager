@@ -2,6 +2,8 @@
 
 ## Latest Changes
 
+## 0.8.0 (2026-06-24)
+
 ### Refactors
 
 * ♻️ Refactor main Dockerfile to contain all logic, cache by uv. PR [#62](https://github.com/tiangolo/issue-manager/pull/62) by [@tiangolo](https://github.com/tiangolo).

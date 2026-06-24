@@ -33,7 +33,7 @@ jobs:
   issue-manager:
     runs-on: ubuntu-latest
     steps:
-      - uses: tiangolo/issue-manager@0.7.1
+      - uses: tiangolo/issue-manager@0.8.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 ```
@@ -292,7 +292,7 @@ jobs:
   issue-manager:
     runs-on: ubuntu-latest
     steps:
-      - uses: tiangolo/issue-manager@0.7.1
+      - uses: tiangolo/issue-manager@0.8.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           config: >
@@ -366,7 +366,7 @@ jobs:
   issue-manager:
     runs-on: ubuntu-latest
     steps:
-      - uses: tiangolo/issue-manager@0.7.1
+      - uses: tiangolo/issue-manager@0.8.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           config: >
