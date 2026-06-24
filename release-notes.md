@@ -8,6 +8,7 @@
 
 ### Internal
 
+* 👷 Add CI to automate release process. PR [#65](https://github.com/tiangolo/issue-manager/pull/65) by [@tiangolo](https://github.com/tiangolo).
 * 📝 Refactor release notes, move to its own file. PR [#64](https://github.com/tiangolo/issue-manager/pull/64) by [@tiangolo](https://github.com/tiangolo).
 * ♻️ Migrate from plain pip to uv. PR [#60](https://github.com/tiangolo/issue-manager/pull/60) by [@tiangolo](https://github.com/tiangolo).
 * 👷 Update issue-manager to 0.7.1. PR [#59](https://github.com/tiangolo/issue-manager/pull/59) by [@tiangolo](https://github.com/tiangolo).
