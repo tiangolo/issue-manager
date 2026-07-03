@@ -15,4 +15,6 @@ COPY ./app /code/app
 
 ENV PYTHONPATH=/code/app
 
-CMD ["uv", "run", "python", "/code/app/main.py"]
+# Use the image's baked-in venv directly. `uv run` would execute in the mounted
+# consumer repo and would use its pyproject.toml.
+CMD ["/code/.venv/bin/python", "/code/app/main.py"]
