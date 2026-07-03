@@ -13,6 +13,9 @@ RUN uv sync --locked
 
 COPY ./app /code/app
 
-ENV PYTHONPATH=/code/app
+ENV PYTHONPATH=/code/app \
+    PATH="/code/.venv/bin:$PATH"
 
-CMD ["uv", "run", "python", "/code/app/main.py"]
+# Put the image's baked-in venv first on PATH. `uv run` would execute in the
+# mounted consumer repo and would use its pyproject.toml.
+CMD ["python", "/code/app/main.py"]
