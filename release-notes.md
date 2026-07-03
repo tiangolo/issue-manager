@@ -2,6 +2,8 @@
 
 ## Latest Changes
 
+## 0.8.1 (2026-07-03)
+
 ### Internal
 
 * ⬆️ Update latest-changes to 0.6.1. PR [#72](https://github.com/tiangolo/issue-manager/pull/72) by [@tiangolo](https://github.com/tiangolo).
