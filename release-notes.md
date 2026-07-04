@@ -2,6 +2,10 @@
 
 ## Latest Changes
 
+### Internal
+
+* 👷 Fix latest-changes checkout target. PR [#76](https://github.com/tiangolo/issue-manager/pull/76) by [@tiangolo](https://github.com/tiangolo).
+
 ## 0.8.1 (2026-07-03)
 
 ### Internal
