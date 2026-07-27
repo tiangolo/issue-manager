@@ -4,6 +4,7 @@
 
 ### Internal
 
+* ⬆️ Upgrade latest-changes to 0.7.1. PR [#77](https://github.com/tiangolo/issue-manager/pull/77) by [@tiangolo](https://github.com/tiangolo).
 * 👷 Fix latest-changes checkout target. PR [#76](https://github.com/tiangolo/issue-manager/pull/76) by [@tiangolo](https://github.com/tiangolo).
 
 ## 0.8.1 (2026-07-03)
