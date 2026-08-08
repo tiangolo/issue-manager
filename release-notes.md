@@ -2,6 +2,8 @@
 
 ## Latest Changes
 
+## 0.8.2 (2026-08-08)
+
 ### Internal
 
 * ✨ Use PR Submit for automated PRs. PR [#82](https://github.com/tiangolo/issue-manager/pull/82) by [@tiangolo](https://github.com/tiangolo).
