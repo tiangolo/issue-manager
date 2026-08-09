@@ -2,6 +2,8 @@
 
 ## Latest Changes
 
+* ⬆ Bump python from 3.14.6-slim to 3.15.0b3-slim in the docker-images group. PR [#81](https://github.com/tiangolo/issue-manager/pull/81) by [@dependabot[bot]](https://github.com/apps/dependabot).
+
 ### Internal
 
 * ⬆ Bump the github-actions group across 1 directory with 5 updates. PR [#74](https://github.com/tiangolo/issue-manager/pull/74) by [@dependabot[bot]](https://github.com/apps/dependabot).
