@@ -4,6 +4,10 @@
 
 * ⬆ Bump python from 3.14.6-slim to 3.15.0b3-slim in the docker-images group. PR [#81](https://github.com/tiangolo/issue-manager/pull/81) by [@dependabot[bot]](https://github.com/apps/dependabot).
 
+### Refactors
+
+* 🐛 Fix a couple of typos in the logs. PR [#68](https://github.com/tiangolo/issue-manager/pull/68) by [@browniebroke](https://github.com/browniebroke).
+
 ### Internal
 
 * 🔧 Set Dependabot schedule interval to "monthly". PR [#70](https://github.com/tiangolo/issue-manager/pull/70) by [@YuriiMotov](https://github.com/YuriiMotov).
