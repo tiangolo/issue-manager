@@ -180,7 +180,7 @@ def close_issue(
     *, issue: Issue, keyword_meta: KeywordMeta, keyword: str, label_strs: Set[str]
 ) -> None:
     logging.info(
-        f"Clossing issue: #{issue.number} with message: {keyword_meta.message}"
+        f"Closing issue: #{issue.number} with message: {keyword_meta.message}"
     )
     issue.create_comment(keyword_meta.message)
     issue.edit(state="closed")
@@ -242,7 +242,7 @@ def process_issue(*, issue: Issue, settings: Settings) -> None:
                 break
             else:
                 logging.info(
-                    f"Not clossing issue: #{issue.number} as the delay hasn't been reached: {keyword_meta.delay}"
+                    f"Not closing issue: #{issue.number} as the delay hasn't been reached: {keyword_meta.delay}"
                 )
 
 
