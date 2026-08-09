@@ -4,6 +4,7 @@
 
 ### Internal
 
+* ⬆ Bump the github-actions group across 1 directory with 5 updates. PR [#74](https://github.com/tiangolo/issue-manager/pull/74) by [@dependabot[bot]](https://github.com/apps/dependabot).
 * ⬆ Bump typer from 0.26.7 to 0.27.0 in the python-packages group across 1 directory. PR [#75](https://github.com/tiangolo/issue-manager/pull/75) by [@dependabot[bot]](https://github.com/apps/dependabot).
 * ✨ Use PR Submit for automated PRs. PR [#82](https://github.com/tiangolo/issue-manager/pull/82) by [@tiangolo](https://github.com/tiangolo).
 * 🔧 Fix Zizmor version comments. PR [#80](https://github.com/tiangolo/issue-manager/pull/80) by [@tiangolo](https://github.com/tiangolo).
