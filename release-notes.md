@@ -10,6 +10,7 @@
 
 ### Internal
 
+* ⬆ Bump urllib3 from 2.7.0 to 2.8.0. PR [#91](https://github.com/tiangolo/issue-manager/pull/91) by [@dependabot[bot]](https://github.com/apps/dependabot).
 * ⬆ Bump pyjwt from 2.13.0 to 2.15.0. PR [#90](https://github.com/tiangolo/issue-manager/pull/90) by [@dependabot[bot]](https://github.com/apps/dependabot).
 * ⬆ Bump cryptography from 49.0.0 to 50.0.0. PR [#78](https://github.com/tiangolo/issue-manager/pull/78) by [@dependabot[bot]](https://github.com/apps/dependabot).
 * 🔧 Set Dependabot schedule interval to "monthly". PR [#70](https://github.com/tiangolo/issue-manager/pull/70) by [@YuriiMotov](https://github.com/YuriiMotov).
