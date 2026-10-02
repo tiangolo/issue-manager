@@ -10,6 +10,7 @@
 
 ### Internal
 
+* ⬆ Bump the python-packages group across 1 directory with 4 updates. PR [#89](https://github.com/tiangolo/issue-manager/pull/89) by [@dependabot[bot]](https://github.com/apps/dependabot).
 * ⬆ Bump urllib3 from 2.7.0 to 2.8.0. PR [#91](https://github.com/tiangolo/issue-manager/pull/91) by [@dependabot[bot]](https://github.com/apps/dependabot).
 * ⬆ Bump pyjwt from 2.13.0 to 2.15.0. PR [#90](https://github.com/tiangolo/issue-manager/pull/90) by [@dependabot[bot]](https://github.com/apps/dependabot).
 * ⬆ Bump cryptography from 49.0.0 to 50.0.0. PR [#78](https://github.com/tiangolo/issue-manager/pull/78) by [@dependabot[bot]](https://github.com/apps/dependabot).
