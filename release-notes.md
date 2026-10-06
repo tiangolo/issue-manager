@@ -10,6 +10,7 @@
 
 ### Internal
 
+* 👷 Specify uv version as `version: "latest-known"` for `setup-uv` action. PR [#84](https://github.com/tiangolo/issue-manager/pull/84) by [@YuriiMotov](https://github.com/YuriiMotov).
 * ⬆ Bump the github-actions group across 1 directory with 2 updates. PR [#88](https://github.com/tiangolo/issue-manager/pull/88) by [@dependabot[bot]](https://github.com/apps/dependabot).
 * ⬆ Bump the python-packages group across 1 directory with 4 updates. PR [#89](https://github.com/tiangolo/issue-manager/pull/89) by [@dependabot[bot]](https://github.com/apps/dependabot).
 * ⬆ Bump urllib3 from 2.7.0 to 2.8.0. PR [#91](https://github.com/tiangolo/issue-manager/pull/91) by [@dependabot[bot]](https://github.com/apps/dependabot).
