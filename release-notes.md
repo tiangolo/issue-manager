@@ -10,6 +10,11 @@
 
 ### Internal
 
+* ⬆ Bump the github-actions group across 1 directory with 2 updates. PR [#88](https://github.com/tiangolo/issue-manager/pull/88) by [@dependabot[bot]](https://github.com/apps/dependabot).
+* ⬆ Bump the python-packages group across 1 directory with 4 updates. PR [#89](https://github.com/tiangolo/issue-manager/pull/89) by [@dependabot[bot]](https://github.com/apps/dependabot).
+* ⬆ Bump urllib3 from 2.7.0 to 2.8.0. PR [#91](https://github.com/tiangolo/issue-manager/pull/91) by [@dependabot[bot]](https://github.com/apps/dependabot).
+* ⬆ Bump pyjwt from 2.13.0 to 2.15.0. PR [#90](https://github.com/tiangolo/issue-manager/pull/90) by [@dependabot[bot]](https://github.com/apps/dependabot).
+* ⬆ Bump cryptography from 49.0.0 to 50.0.0. PR [#78](https://github.com/tiangolo/issue-manager/pull/78) by [@dependabot[bot]](https://github.com/apps/dependabot).
 * 🔧 Set Dependabot schedule interval to "monthly". PR [#70](https://github.com/tiangolo/issue-manager/pull/70) by [@YuriiMotov](https://github.com/YuriiMotov).
 * ⬆ Bump the github-actions group across 1 directory with 5 updates. PR [#74](https://github.com/tiangolo/issue-manager/pull/74) by [@dependabot[bot]](https://github.com/apps/dependabot).
 * ⬆ Bump typer from 0.26.7 to 0.27.0 in the python-packages group across 1 directory. PR [#75](https://github.com/tiangolo/issue-manager/pull/75) by [@dependabot[bot]](https://github.com/apps/dependabot).
